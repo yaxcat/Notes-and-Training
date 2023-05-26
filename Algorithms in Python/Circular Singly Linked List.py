@@ -140,7 +140,10 @@ class CircularSinglyLinkedList:
                 current_node.next = deletion_node.next # Set the current node's next property to the node AFTER the one we're deleting
                 self.list_len -= 1
                 return "Middle node deleted"                
-
+    def delete_entire_list(self):
+        self.head = None
+        self.tail.next = None # Since this is a CSLL, we must delete the last node's next reference
+        self.tail = None   
 
 
 
