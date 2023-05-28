@@ -103,9 +103,43 @@ class DoublyLinkedList:
                 else:
                     current_node = current_node.next
             return "Node not found."
-                
-
-
+    def delete_node_by_position(self, position):
+        # Check to see if the node exists:
+        if self.head is None:
+            return "There are no nodes to delete"
+        else:
+            
+            # If we want to delete the first node from the list
+            if position == 0:
+                if self.head == self.tail: # If head and tail are identical, there is only one node in the list, so just delete all references
+                    self.head = None
+                    self.tail = None
+                else:
+                    self.head = self.head.next # Set the head to the node after the node we're deleting
+                    self.head.prev = None # What was the second node is now the first.  Therefore, set its prev property to none since we've deleted its predecessor
+                return "Node deleted from the beginning of the list"
+            # Delete a node from the end of the list
+            elif position == -1:
+                if self.head == self.tail: # If head and tail are identical, there is only one node in the list, so just delete all references
+                    self.head = None
+                    self.tail = None
+                else:
+                    self.tail = self.tail.prev # Set the tail to the location of the second to last node, since we're deleting the last one
+                    self.tail.next = None # Since the second to last node now occupies last place, we must delete its next property, which points to the location of the node we just deleted
+                return "Node deleted from the end of the list"
+            # Delete a node from the somewhere in the middle of the list
+            else:
+                current_node = self.head
+                index = 0
+                while index < position - 1:
+                    current_node = current_node.next
+                    index += 1
+                # Upon loop exit, the current node will be the node before the position we are deleting from
+                # This is all confusing as shit.  See the excel sheet for a visual aid.
+                next_node = current_node.next # Node we are deleting
+                current_node.next = next_node.next # Set the next property of the node before the one we are deleting to point to the node after the node we are deleting
+                next_node.next.prev = current_node # Set the prev property of the node before the one we are deleting to point to the node after the node we are deleting
+                return "Node deleted from the middle of the list"
 # Bookending node - The list is not very good at inferring where the end of the list aught to be.  Therefore, it is
 # necessary to explictly add the final node in the list before adding elements to the middle.  Otherwise it will break.
 print("CREATING NEW DLL")
@@ -144,3 +178,28 @@ print("SEARCHING FOR NODES D AND YYY")
 print("------------------------------------------------")
 print(my_new_dll.find_node_by_val("D"))
 print(my_new_dll.find_node_by_val("YYY"))
+print("\n"*3)
+print("DELETING NODE FROM POSITION 2")
+print("------------------------------------------------")
+print(my_new_dll.delete_node_by_position(2))
+print("\n"*3)
+print("TRAVERSING ENTIRE LIST FORWARD")
+print("------------------------------------------------")
+my_new_dll.traverse_and_print('forward')
+print("\n"*3)
+print("DELETING NODE FROM BEGINNING OF THE LIST")
+print("------------------------------------------------")
+print(my_new_dll.delete_node_by_position(0))
+print("\n"*3)
+print("TRAVERSING ENTIRE LIST FORWARD")
+print("------------------------------------------------")
+my_new_dll.traverse_and_print('forward')
+print("\n"*3)
+print("DELETING NODE FROM END OF THE LIST")
+print("------------------------------------------------")
+print(my_new_dll.delete_node_by_position(-1))
+print("\n"*3)
+print("TRAVERSING ENTIRE LIST FORWARD")
+print("------------------------------------------------")
+my_new_dll.traverse_and_print('forward')
+print("\n"*3)
