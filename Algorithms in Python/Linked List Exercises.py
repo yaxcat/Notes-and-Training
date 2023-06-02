@@ -161,3 +161,84 @@ def return_nth_two(linked_list, n):
 
 print("Return nth Two:")
 print("     ", return_nth_one(my_linked_list, 4))
+
+
+# EXERCISE 3
+# Partition a linked list around some value, x, such that all values less than x are positioned to its right and all values greater
+# than x are to its left.  The order of the values to the right and left of x does not matter as long they are less than or greater
+# x respectively.
+#___________________________________________________________________________________________________________________
+my_linked_list = LinkedList()
+my_linked_list.generate_linked_list_fr_rand(10, 0, 99)
+
+# If the linked list class has a legnth property, this is relatively straightforward:
+print("\n"*3)
+print("EXERCISE THREE:")
+print("")
+print("Linked List:", my_linked_list)
+
+def partition_list(linked_list, x):
+    current_node = linked_list.head
+    linked_list.tail = linked_list.head
+    # Loop through all the nodes
+    while current_node:
+        next_node = current_node.next
+        current_node.next = None # Set the current node's next property to none because the initial value will be overwritten anyway
+        # If the node's value is less than x, partition by inserting it at the beginning of the list
+        if current_node.value < x:
+            current_node.next = linked_list.head # Since the node is going at position 0, its next prop should be equal to whatever is currently in the head, since that node will now be second
+            linked_list.head = current_node # Update the head to point to the new node that is now first in line
+        # If the node's value is greater than x, partition by inserting it at the end of the list
+        else:
+            linked_list.tail.next = current_node # Since we're inserting at the end of the list, point the current last node's next prop at the node we will be inserting at the end
+            linked_list.tail = current_node # Point the tail at the new node we've inserted at the end
+        current_node = next_node
+    # If whatever our final node winds up being has a next prop, set that to null since we don't want to turn this into a circular list
+    if linked_list.tail.next is not None:
+        linked_list.tail.next = None
+
+print("Partitioned list:")
+partition_list(my_linked_list, 50)
+print("     ", my_linked_list)
+
+# EXERCISE 4
+# You have two numbers represented by linked lists where each node contains a single digit. The digits are stored in reverse order
+# such that the ones digit is at the head of the list.  Write a function that adds the two numbers and returns the sum as a linked
+# list.
+#___________________________________________________________________________________________________________________
+ll1 = LinkedList()
+ll2 = LinkedList()
+ll1.generate_linked_list_fr_rand(3, 0, 9)
+ll2.generate_linked_list_fr_rand(3, 0, 9)
+print("\n"*3)
+print("EXERCISE FOUR:")
+print("")
+print("List 1:", ll1)
+print("List 2:", ll2)
+
+def return_vals_reversed(linked_list):
+    current_node = linked_list.head
+    values = []
+    while current_node:
+        values.append(str(current_node.value))
+        current_node = current_node.next
+    values = list(reversed(values))
+    reversed_sequence = ''
+    reversed_sequence = reversed_sequence.join(values)
+    return int(reversed_sequence)
+
+def add_lists(ll_1, ll_2):
+    ll1_vals = return_vals_reversed(ll_1)
+    ll2_vals = return_vals_reversed(ll_2)
+    print("List 1 Digits:", ll1_vals)
+    print("List 2 Digits:", ll2_vals)
+    total = list(reversed(str(ll1_vals + ll2_vals)))
+    print("     Total:", total)
+    new_linked_list = LinkedList()
+    for digit in total:
+        new_linked_list.add_node(digit)
+    return new_linked_list
+
+
+new_linked_list = add_lists(ll1, ll2)
+print(new_linked_list)
