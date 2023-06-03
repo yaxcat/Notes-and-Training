@@ -242,3 +242,39 @@ def add_lists(ll_1, ll_2):
 
 new_linked_list = add_lists(ll1, ll2)
 print(new_linked_list)
+
+
+# EXERCISE 5
+# Given two singly linked lists, determine if the two lists intersect. Return the intersecting node. Note that the intersection
+# is based on the reference, not the value.  That is, if the kth node of the first list is the exact same node by reference
+# as the second linked list, then they are intersecting.
+#___________________________________________________________________________________________________________________
+# TC: O(a + b) because the length of the lists can be different and impossible to anticipate
+def find_intersection(ll1, ll2):
+    # Determine whether or not the lists intersect at all
+    if ll1.tail != ll2.tail: # If the lists intersect, their tails will be the same
+        return "The two lists do not intersect"
+    else:
+        len1 = len(ll1)
+        len2 = len(ll2)
+        # Identify the longer and shorter lists
+        shorter = ll1 if len1 < len2 else len2
+        longer = ll1 if len1 > len2 else len2
+        # Calculate the difference between them, this will be used to sync up our iteration over the lists
+        difference = len(longer) - len(shorter)
+
+        longer_node = longer.head
+        shorter_node = shorter.head
+
+        # Since we know that the tails of two intersecting lists will be the same, we also know that nodes at the begininning of
+        # the longer list will be 'before' the starting node of the shorter list, and it is therefore impossible to have an
+        # intersection there.  Because of this, we must advance node of the longer list to be equal to the starting node of the 
+        # shorter list before doing the comparison.
+        for i in range(difference):
+            longer_node = longer_node.next
+
+        # Loop through each list and compare nodes:
+        while longer_node is not shorter_node:
+            longer_node = longer_node.next
+            shorter_node = shorter_node.next
+        return longer_node
