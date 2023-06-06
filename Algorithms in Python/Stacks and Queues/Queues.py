@@ -64,12 +64,58 @@ class Queue:
 #       - Having a size limit solves both memory allocation and forward shuffle problems that reduce performance
 #       - With a circular queue, values in the list are not deleted, just ignored
 
-myQueue = Queue()
-print(myQueue.isEmpty())
-myQueue.enqueue(1)
-myQueue.enqueue(2)
-myQueue.enqueue(3)
+class CircularQueue:
+    def __init__(self, maxSize):
+        self.list = [None] * maxSize # Create a list of null values equal to the maxSize argument
+        self.max_size = maxSize
+        self.start = -1 # Defines the starting position of the list
+        self.top = -1 # Defines the ending position of the list
+
+    def __str__(self):
+        values = [str(x) for x in self.list]
+        return ' '.join(values)
+    
+    def isFull(self):
+        # If adding one more element means we wind up at the starting position, we don't don't have room.  This covers the 'circular'
+        # scenario, where we've done some dequeue operations and 'wrapped around' to what was originally the beginning of the list
+        if self.top + 1 == self.start:
+            return True
+        # If adding one more element means we're at the max size, we don't have room.  This covers the non-circular scenario, where
+        # we just added a bunch of elements without deleting any. 
+        elif self.start == 0 and self.top + 1 == self.max_size:
+            return True
+        else:
+            return False
+    
+    # In this case, we are only checking if the queue is truly empty.  As the queue is used, values may be dequeued, but they are
+    # forgotten and not truly removed.
+    def isEmpty(self):
+        if self.top == -1:
+            return True
+        else:
+            return False
+    
+    def enqueue(self, value):
+        if self.isFull() == True:
+            return "The queue is full"
+        else:
+            # If the queue is not full, but we've reached the max size of the underlying list, it means we need to put the 'circular'
+            # in CircularQueue by wrapping around and starting back at the beginning of the list.  We will overwrite any existing
+            # values
+            if self.top + 1 == self.max_size:
+                self.top = 0
+            else:
+                self.top += 1 # If we haven't reached the max size of the list, just increment top by one to keep track of where we are
+                # We need to account for scenario in which we add the very first element to an empty queue:
+                if self.start == -1: # Signifies an empty list
+                    self.start = 0
+            self.list[self.top] = value # Change the value at the appropriate position
+            return f"The value: {value} was inserted at the end of the list in position {self.top}"
+
+
+
+myQueue = CircularQueue(5)
 print(myQueue)
-print(myQueue.dequeue())
-print(myQueue) 
-print(myQueue.peek())
+#print(myQueue.isFull())
+print(myQueue.enqueue(1))
+print(myQueue.isEmpty()) 
