@@ -73,7 +73,7 @@ class CircularQueue:
 
     def __str__(self):
         values = [str(x) for x in self.list]
-        return ' '.join(values)
+        return '|'+' '.join(values)+'|'
     
     def isFull(self):
         # If adding one more element means we wind up at the starting position, we don't don't have room.  This covers the 'circular'
@@ -112,10 +112,38 @@ class CircularQueue:
             self.list[self.top] = value # Change the value at the appropriate position
             return f"The value: {value} was inserted at the end of the list in position {self.top}"
 
+    def dequeue(self):
+        if self.isEmpty() == True:
+            return "The list is empty, there are no items to dequeue."
+        else:
+            # Save the first item properties to temporary variables
+            first_element = self.list[self.start]
+            temp_start = self.start
+            # If there is only one item in the list:
+            if self.start == self.top:
+                self.start = -1 # Set start back to -1 since the list is now empty
+                self.top = -1 # Set top back to -1 since the list is now empty
+            # If we've reached the end of the list, wrap around and start back at the beginning.  Time is a flat circle.
+            elif self.start + 1 == self.max_size:
+                self.start = 0
+            # If there is more than one element in the list and we're somewhere in the middle:
+            else:
+                self.start += 1 # Just increment the start position by one
+            # Finally, tidy up the list and return the leading element
+            self.list[temp_start] = None # Set the value of the dequeued element to None so that we can forget about it
+            return first_element
+    
+    def peek(self):
+        if self.isEmpty() == True:
+            return "The list is empty, there are no items to peek at."
+        else:
+            return self.list[self.start]
+    
+    def delete_all_elements(self):
+        # Simply null out all elements and set start and top back to -1
+        self.list = [None] * self.max_size
+        self.start = -1
+        self.top = -1
+        return "All elements have been deleted from the queue"
 
 
-myQueue = CircularQueue(5)
-print(myQueue)
-#print(myQueue.isFull())
-print(myQueue.enqueue(1))
-print(myQueue.isEmpty()) 
