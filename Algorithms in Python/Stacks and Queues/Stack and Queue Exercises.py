@@ -208,15 +208,73 @@ class PlateStack():
 plates = PlateStack(2)
 print("Empty Plates:", plates)
 plates.push(1)
-#plates.push(2)
-#plates.push(3)
-#plates.push(4)
-#plates.push(5)
-#plates.push(6)
+plates.push(2)
+plates.push(3)
+plates.push(4)
+plates.push(5)
+plates.push(6)
 print("Empty Plates:", plates)
 print("Simple Pop:", plates.pop())
 print("Simple Pop:", plates.pop())
-#print("Empty Plates:", plates)
-#print("Pop by Stack:", plates.pop_by_stack_num(0))
-#print("Pop by Stack:", plates.pop_by_stack_num(0))
-#print("Empty Plates:", plates)
+print("Empty Plates:", plates)
+print("Pop by Stack:", plates.pop_by_stack_num(0))
+print("Pop by Stack:", plates.pop_by_stack_num(0))
+print("Empty Plates:", plates)
+print("\n"*3)
+
+# EXERCISE 4.
+# Create a queue class which implements a queue using two stacks.
+# _____________________________________________________________________________________________________________________________
+class Stack2():
+
+    def __init__(self):
+        self.list = []
+    
+    def __len__(self):
+        return len(self.list)
+    
+    # Append an item to the end of the list
+    def push(self, item):
+        self.list.append(item)
+
+    # Pop an item from the end of the list
+    def pop(self):
+        if len(self.list) == 0:
+            return None
+        return self.list.pop()
+    
+
+class QueueViaStack():
+    # Each Queue object should have two stacks to shuffle items between
+    def __init__(self):
+        self.inStack = Stack2()
+        self.outStack = Stack2()
+
+    # Add items to the queue
+    def enqueue(self, item):
+        self.inStack.push(item)
+
+    # Remove elements from the 'in stack' and put them in the 'out stack'
+    def dequeue(self):
+        # First, the order of outStack elements must be reversed.  So if inStack = [1,2,3,4], outStack = [4,3,2,1]
+        while len(self.inStack): # While len(inStack) > 0
+            self.outStack.push(self.inStack.pop()) # Remove the value from in stack and append it to out stack
+        # Next, pop the outStack result - This gives us the FIFO behavior we would expect of a queue, since first is now last (i.e. our popped value would be 1)
+        result = self.outStack.pop()
+        # Finally, put everything back to the way it was, so we run this process as many times as we like
+        while (len(self.outStack)):
+            self.inStack.push(self.outStack.pop()) # inStack is now empty, so we just pop outStack until it is empty, which reverses the order of elements back to what it was originally (minus the value we popped)
+        
+        return result
+    
+
+my_queue = QueueViaStack()
+
+my_queue.enqueue(1)
+my_queue.enqueue(2)
+my_queue.enqueue(3)
+my_queue.enqueue(4)
+print(my_queue.dequeue())
+print(my_queue.dequeue())
+print(my_queue.dequeue())
+print(my_queue.dequeue())
