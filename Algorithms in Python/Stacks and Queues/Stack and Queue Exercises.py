@@ -278,3 +278,46 @@ print(my_queue.dequeue())
 print(my_queue.dequeue())
 print(my_queue.dequeue())
 print(my_queue.dequeue())
+print("\n"*3)
+
+
+# EXERCISE 5.
+# An animal shelter which holds only dogs and cats operates on a first-in, first-out basis.  People must adopt either
+# the oldest (based on arrival time) of all animals at the shelter, or they can select whether they would prefer a dog
+# or a cat, and recieve the oldest animal of that type.  Create a data structure to maintain this system and create
+# methods for enqueueAny, dequeueAny, dequeueDog, dequeueCat
+# _____________________________________________________________________________________________________________________________
+
+# Simpler than it sounds, since there is no requirement that we keep all the animals in a single list
+class AnimalShelter():
+    # Initialize two lists, one to hold dogs, and the other cats
+    def __init__(self):
+        self.cats = []
+        self.dogs = []
+
+    def enqueue(self, animal, animal_type):
+        if animal_type == 'Cat':
+            self.cats.append(animal)
+        elif animal_type == 'Dog':
+            self.dogs.append(animal)
+        else:
+            return "That type of animal is not allowed at the shelter"
+    
+    def dequeuCat(self):
+        if len(self.cats) == 0:
+            return None
+        else:
+            return self.cats.pop(0) # Zero causes pop to return the first element in the list, rather than the last (which is the default)
+    
+    def dequeueDog(self):
+        if len(self.dogs) == 0:
+            return None
+        else:
+            return self.dogs.pop(0)
+        
+    def dequeueAny(self):
+        if len(self.cats) == 0:
+            result = self.dogs.pop(0)
+        else:
+            result = self.cats.pop(0)
+        return result
