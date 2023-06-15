@@ -39,7 +39,7 @@ def recursiveExample(n):
         print(n)
         recursiveExample(n-1)
 
-recursiveExample(5)
+#recursiveExample(5)
 
 # Iteration is both more space and time efficient than recursion, but recursive code is easier to write, especially
 # for some data structures.
@@ -56,7 +56,7 @@ def powerOfTwo(n):
         power = powerOfTwo(n-1)
         return power * 2
 
-print(powerOfTwo(5))
+#print(powerOfTwo(5))
 
 # Factorial function:
 def factorial(n):
@@ -67,4 +67,17 @@ def factorial(n):
     else:
         return n * factorial(n-1)
 
-print(factorial(10))
+#print(factorial(10))
+
+
+# Fibonacci Sequence:
+def fib(n):
+    assert n >= 0 and int(n) == n, "Fibonacci number cannot be negative number or non integer."
+    end = [0, 1] # Fibonacci sequence terminates in 0 or 1
+    if n in end:
+        return n
+    else:
+        return fib(n-1) + fib(n-2) # Start from n and work backwards towards the base case
+
+
+print(fib(7))
