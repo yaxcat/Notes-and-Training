@@ -72,7 +72,7 @@ print(euclidean_gcd(48, 18))
 #   4. 1/2  -> Quotient = 0, Remainder = 1
 
 def decimal_to_binary(num, binary_result=""):
-    assert int(n) == n, "The parameter must be an integer"
+    assert int(num) == num, "The parameter must be an integer"
     if num == 0:
         return binary_result
     else:
