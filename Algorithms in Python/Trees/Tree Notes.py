@@ -68,7 +68,7 @@ tree.addChild(hot)
 hot.addChild(coffee)
 hot.addChild(tea)
 
-print(tree)
+#print(tree)
 
 
 
@@ -113,5 +113,123 @@ class BinaryTreeNode:
         self.data = data
         self.leftChild = None
         self.rightChild = None
-    
-new_bt = TreeNode("Drinks")
+
+
+# First, create the nodes, starting with the root.
+mybt = BinaryTreeNode("N1")
+n2 = BinaryTreeNode("N2")
+n3 = BinaryTreeNode("N3")
+n4 = BinaryTreeNode("N4")
+n5 = BinaryTreeNode("N5")
+n6 = BinaryTreeNode("N6")
+n7 = BinaryTreeNode("N7")
+n8 = BinaryTreeNode("N8")
+n9 = BinaryTreeNode("N9")
+x = BinaryTreeNode("X")
+
+# Next, assemble the tree by linking the child nodes to the root node.  
+# Organized to match the diagram:  PreOrder Traversal of Binary Tree.pdf
+mybt.leftChild = n2
+mybt.rightChild = n3
+n2.leftChild = n4
+n2.rightChild = n5
+n4.leftChild = n8
+n4.rightChild = n9
+n3.leftChild = n6
+n3.rightChild = n7
+
+
+
+# We can now define a function to perform pre-order traversal
+# TC: O(n),
+# SC: O(n) since we're using stack memory
+def preOrderTraversal(rootNode, node_returns=[], side=None):
+    if not rootNode:
+        print("     " + (" -> ".join(node_returns)))
+        return 
+    # Added this section to help understand the recursive flow
+    if side == 'Left':
+        print("L: ", rootNode.data)
+    elif side == 'Right':
+        print("R:", rootNode.data)
+    else:
+        print("-:", rootNode.data)
+    node_returns.append(rootNode.data)
+    preOrderTraversal(rootNode.leftChild, node_returns, side='Left') # Function calls itself recursively until it runs out of left nodes
+    preOrderTraversal(rootNode.rightChild, node_returns, side='Right') # Then, the same thing happens until we run out of right nodes
+    print("")
+
+print("PREORDER TRAVERSAL")
+preOrderTraversal(mybt)
+
+
+
+# In order traversal function
+# Notice how the code is basically identical to the preOrderTraversal function.  Traversal of the graph takes place
+# in exactly the same order as the function.  The difference in output is simply due to where the print statements
+# are located.
+# TC: O(n)
+# SC: O(n)
+def inOrderTraversal(rootNode,node_returns=[], side=None):
+    if not rootNode:
+        print("     " + (" -> ".join(node_returns)))
+        return
+    node_returns.append(rootNode.data)
+    inOrderTraversal(rootNode.leftChild, node_returns, side="Left")
+    if side == 'Left':
+        print("L: ", rootNode.data)
+    elif side == 'Right':
+        print("R:", rootNode.data)
+    else:
+        print("-:", rootNode.data)
+    inOrderTraversal(rootNode.rightChild, node_returns,  side="Right")
+    print("")
+
+
+print("IN ORDER TRAVERSAL")
+inOrderTraversal(mybt)
+
+
+# PostOrder Traversal of Binary Tree
+# Again, actual graph traversal order is identical to previous functions, difference is in where we return the values
+# TC: O(n)
+# SC: O(n)
+def postOrderTraversal(rootNode,node_returns=[], side=None):
+    if not rootNode:
+        print("     " + (" -> ".join(node_returns)))
+        return
+    node_returns.append(rootNode.data)
+    postOrderTraversal(rootNode.leftChild, node_returns, side="Left")
+    postOrderTraversal(rootNode.rightChild, node_returns,  side="Right")
+    if side == 'Left':
+        print("L: ", rootNode.data)
+    elif side == 'Right':
+        print("R:", rootNode.data)
+    else:
+        print("-:", rootNode.data)
+    print("")
+
+
+print("POST ORDER TRAVERSAL")
+postOrderTraversal(mybt)
+
+
+#LevelOrder Traversal of Binary Tree
+
+def levelOrderTraversal(rootNode,node_returns=[], side=None):
+    if not rootNode.leftChild and not rootNode.rightChild:
+        return
+    node_returns.append(rootNode.data)
+    if side == 'Left':
+        print("L: ", rootNode.data)
+    elif side == 'Right':
+        print("R:", rootNode.data)
+    else:
+        print("-:", rootNode.data)
+    print("")
+    levelOrderTraversal(rootNode.leftChild, node_returns, side="Left")
+    levelOrderTraversal(rootNode.rightChild, node_returns,  side="Right")
+
+
+print("LEVEL ORDER TRAVERSAL")
+levelOrderTraversal(mybt)
