@@ -214,22 +214,3 @@ print("POST ORDER TRAVERSAL")
 postOrderTraversal(mybt)
 
 
-#LevelOrder Traversal of Binary Tree
-
-def levelOrderTraversal(rootNode,node_returns=[], side=None):
-    if not rootNode.leftChild and not rootNode.rightChild:
-        return
-    node_returns.append(rootNode.data)
-    if side == 'Left':
-        print("L: ", rootNode.data)
-    elif side == 'Right':
-        print("R:", rootNode.data)
-    else:
-        print("-:", rootNode.data)
-    print("")
-    levelOrderTraversal(rootNode.leftChild, node_returns, side="Left")
-    levelOrderTraversal(rootNode.rightChild, node_returns,  side="Right")
-
-
-print("LEVEL ORDER TRAVERSAL")
-levelOrderTraversal(mybt)
