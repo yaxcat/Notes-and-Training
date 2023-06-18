@@ -100,30 +100,32 @@ n3.rightChild = n7
 # TC: O(n)
 # SC: O(n)
 def levelOrderTraversal(rootNode):
+    nodes = []
     if not rootNode:
         return
     else:
         # Create a Queue object, which is used as a staging area to line nodes up for processing
         q = Queue()
         q.enqueue(rootNode) # Very first node in the queue will always be the root node
-        print("Initial Queue:", q)
+        #print("Initial Queue:", q)
 
         while not(q.isEmpty()): # While the queue object we created is not empty
-            print(" Queue:", q)
+            #print(" Queue:", q)
             # We can only dequeue one element at a time, but we add that node's children immediately after removing it
             # and therefore the queue will grow in size 
             root = q.dequeue()
-            print("     Root:", root.value.data)
+            nodes.append(root.value.data)
+            #print("     Root:", root.value.data)
             if root.value.leftChild is not None:
                 q.enqueue(root.value.leftChild) # Add the dequeued node's left child
             if root.value.rightChild is not None:
                 q.enqueue(root.value.rightChild) # Add the dequeued node's right child
             
-            print("         Queue:", q)
-            print("")
-            
-print("\n"*2)
-levelOrderTraversal(mybt)
+            #print("         Queue:", q)
+            #print("")
+        return ' -> '.join(nodes)    
+#print("\n"*2)
+#print(levelOrderTraversal(mybt))
 
 
 # Finding a node in a binary tree
@@ -146,8 +148,138 @@ def levelOrderTraversalSearch(rootNode, target):
                 if root.value.rightChild is not None:
                     q.enqueue(root.value.rightChild) 
 
-print("\n"*2)
-result = levelOrderTraversalSearch(mybt, "N4")
-print("Result:", result.value.data)
-if result.value.leftChild and result.value.rightChild:
-    print("Children:", "L:" + result.value.leftChild.data, "R:" + result.value.rightChild.data)
+#print("\n"*2)
+#result = levelOrderTraversalSearch(mybt, "N4")
+#print("Result:", result.value.data)
+#if result.value.leftChild and result.value.rightChild:
+#    print("Children:", "L:" + result.value.leftChild.data, "R:" + result.value.rightChild.data)
+
+
+
+
+
+# Inserting a node in a binary tree
+# Uses level order traversal methodology to find the first open slot to insert a node.  Since traversal is top to 
+# bottom and left to right, nodes will always added to the higher, more left hand portion fo the graph first
+# TC: O(n)
+# SC: O(n)
+def LOTInsertNode(rootNode, newNode):
+    if not rootNode:
+        rootNode = newNode # This doesn't actually do anything since we're not changing the tree itself
+    else:
+        q = Queue()
+        q.enqueue(rootNode) # Add the root node to the queue so we can analyze it
+        # Iterate over the tree 
+        while not(q.isEmpty()):
+            root = q.dequeue() # Pull the next node in line out of the queue for analysis
+            
+            # Handles insertion of a left child node
+            if root.value.leftChild is not None: # If the current node we're looking at has a left child node
+                q.enqueue(root.value.leftChild) # Add that left child to queue, so we can analyze it later
+            else: # If the current node does not have a left child node
+                root.value.leftChild = newNode # Add the new node as the left child node
+                return f"Succesfully inserted a new left child node: {newNode.data} for parent node: {root.value.data}"
+            
+            # Handles insertion of a right child node
+            if root.value.rightChild is not None:
+                q.enqueue(root.value.rightChild)
+            else:
+                root.value.rightChild = newNode
+                return f"Succesfully inserted a new right child node: {newNode.data} for parent node: {root.value.data}"
+            
+
+# print(LOTInsertNode(mybt, x))
+
+
+# Deleting a node:
+# Deleting a node is tricky since the node we want to delete might have child nodes.  Therefore, we can't
+# simply search for the node in question and delete it.  Instead we must replace it with another node.  We will 
+# replace it with the deepest node in the graph since by definition, that node will not have any children.
+#_____________________________________________________________________________________________________
+# Finds the deepenest node in the graph.  This node will be swapped with the node we want to get rid of in order to
+# accomplish the deletion behavior we wish for.
+def getDeepestNode(rootNode):
+    if not rootNode:
+        return
+    else:
+        q = Queue()
+        q.enqueue(rootNode)
+        # Loop through the tree until there aren't any items left in queue
+        while not(q.isEmpty()):
+            root = q.dequeue()
+            if root.value.leftChild is not None:
+                q.enqueue(root.value.leftChild) 
+            if root.value.rightChild is not None:
+                q.enqueue(root.value.rightChild) 
+        # Return the final item we dequeued, since it is the deepest node
+        deepest_node = root.value
+        return deepest_node
+    
+print("Deepest Node:", getDeepestNode(mybt).data)
+
+
+# Deletes the deepest node by removing address reference
+def deleteDeepestNode(rootNode, deleteNode):
+    if not rootNode:
+        return
+    else:
+        q = Queue()
+        q.enqueue(rootNode)
+        # Loop throught the tree until we find the node we want to delete/replace
+        while not(q.isEmpty()):
+            root = q.dequeue()
+            
+            # Deletion conditions.  Check the root itself and then both the children.  Checking the children before adding
+            # them to the queue saves a bit of effort.
+            if root.value is deleteNode: # If the root node is the node want to delete
+                root.value = None
+                return
+            if root.value.rightChild: # If the root node has a right child
+                if root.value.rightChild is deleteNode: # If that right child is the node we want to delete
+                    root.value.rightChild = None
+                    return
+                else: # If its not
+                    q.enqueue(root.value.rightChild) # Add the right child to the queue so we can check its children later
+            if root.value.leftChild: # If the root node has a left child
+                if root.value.leftChild is deleteNode: # If that left child node is the one we want to delete
+                    root.value.leftChild = None
+                    return
+                else: # If its not
+                    q.enqueue(root.value.leftChild) # Add it to the queue for subseqent analysis
+
+#deleteDeepestNode(mybt, getDeepestNode(mybt))
+#print("\n Deleting Deepest Node \n")
+#print(levelOrderTraversal(mybt))
+#print("Deepest Node:", getDeepestNode(mybt).data)
+
+
+def deleteNodeBT(rootNode, update_node):
+    if not rootNode:
+        return "The binary tree does not exist"
+    else:
+        q = Queue()
+        q.enqueue(rootNode)
+        while not(q.isEmpty()):
+            root = q.dequeue()
+            # If we've found the node whose data we wish to update
+            if root.value.data == update_node:
+                deepest_node = getDeepestNode(rootNode) # Find the deepest node in the graph
+                root.value.data = deepest_node.data # Update the root node's data with the data we've pulled from the deepest node (node we are going to delete)
+                deleteDeepestNode(rootNode, deepest_node) # Now, delete that deepest node
+                return "The node has successfully been deleted"
+            
+            # If we haven't found the node, enqueue its children so that we can analyze them later and keep things
+            # running
+            if root.value.leftChild is not None:
+                q.enqueue(root.value.leftChild)
+            if root.value.rightChild is not None:
+                q.enqueue(root.value.rightChild)
+        
+        # If none of that works
+        return "Failed to delete the node"
+    
+print(levelOrderTraversal(mybt))
+print("\n Deleting Deepest Node \n")
+deleteNodeBT(mybt, 'N3')
+print(levelOrderTraversal(mybt))
+#print("Deepest Node:", getDeepestNode(mybt).data)
