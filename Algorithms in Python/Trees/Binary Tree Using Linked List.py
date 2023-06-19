@@ -283,3 +283,15 @@ print("\n Deleting Deepest Node \n")
 deleteNodeBT(mybt, 'N3')
 print(levelOrderTraversal(mybt))
 #print("Deepest Node:", getDeepestNode(mybt).data)
+
+
+# All we need to do to delete the entire binary tree is sever the links between its root nodes and its children.
+# Once this is done, the node itself, and (previously) subsequent nodes become eligible for garbage collection.
+# TC: O(1)
+# SC: O(1)
+def deleteEntireBinaryTree(rootNode):
+    rootNode.data = None
+    rootNode.leftChild = None
+    rootNode.rightChild = None
+    return "The binary tree has been deleted"
+
