@@ -156,8 +156,6 @@ def levelOrderTraversalSearch(rootNode, target):
 
 
 
-
-
 # Inserting a node in a binary tree
 # Uses level order traversal methodology to find the first open slot to insert a node.  Since traversal is top to 
 # bottom and left to right, nodes will always added to the higher, more left hand portion fo the graph first
