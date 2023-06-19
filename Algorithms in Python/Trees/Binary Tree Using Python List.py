@@ -30,21 +30,55 @@ class BinaryTree:
                 return self.list[i]
         return "Target value not found"
 
+    # TC: O(n)
+    # SC: O(n)
+    def preOrderTraversal(self, index, traversal_result=[]):
+        # If the index supplied is bigger than the tree size, just return
+        if index > self.lastUsedIndex:
+            return 
+        traversal_result.append(self.list[index])
+        # Recursively call the function to visit the left & right side of the tree.
+        # For why this works, see the diagram: Binary Search Tree with Python List 
+        self.preOrderTraversal(index*2, traversal_result) # Visit left side of the tree
+        self.preOrderTraversal(index*2 + 1, traversal_result) # Visit the right side of the tree
+        return traversal_result
+    
+    # TC: O(n)
+    # SC: O(n)
+    def inOrderTraversal(self, index, traversal_result=[]):
+        if index > self.lastUsedIndex:
+            return
+        self.inOrderTraversal(index*2, traversal_result) # Visit left side of the tree
+        traversal_result.append(self.list[index])
+        self.inOrderTraversal(index*2 + 1, traversal_result)
+        return traversal_result
+    
 
-    def preOrderTraversal(self):
-        
+    
+    def levelOrderTraversal(self):
+        traversal_result = []
+        for i in range( 1, self.lastUsedIndex+1):
+            traversal_result.append(self.list[i])
+        return traversal_result
+
+
+    
 
 mybt = BinaryTree(15)
-print(mybt.insertNode("N1"))
-print(mybt.insertNode("N2"))
-print(mybt.insertNode("N3"))
-print(mybt.insertNode("N4"))
-print(mybt.insertNode("N5"))
-print(mybt.insertNode("N6"))
-print(mybt.insertNode("N7"))
-print(mybt.insertNode("N8"))
-print(mybt.insertNode("N9"))
+mybt.insertNode("N1")
+mybt.insertNode("N2")
+mybt.insertNode("N3")
+mybt.insertNode("N4")
+mybt.insertNode("N5")
+mybt.insertNode("N6")
+mybt.insertNode("N7")
+mybt.insertNode("N8")
+mybt.insertNode("N9")
 
 print(mybt.list)
 
-print(mybt.levelOrderTraversalSearch("N90"))
+#print("Pre-Order Traversal")
+print("")
+print("Level Order: ", mybt.levelOrderTraversal())
+print("Pre Order:   ", mybt.preOrderTraversal(1))
+print("In Order     ", mybt.inOrderTraversal(1))
