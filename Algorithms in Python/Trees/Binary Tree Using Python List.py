@@ -32,36 +32,64 @@ class BinaryTree:
 
     # TC: O(n)
     # SC: O(n)
-    def preOrderTraversal(self, index, traversal_result=[]):
+    def preOrderTraversal(self, index, traversal_result=[], side="-"):
         # If the index supplied is bigger than the tree size, just return
         if index > self.lastUsedIndex:
+            print("     Side: " + side + " Index: " + str(index) + " " + "Exit condition reached")
             return 
+        print("Side:", side, "Index:", index, "Node:", self.list[index])
         traversal_result.append(self.list[index])
         # Recursively call the function to visit the left & right side of the tree.
         # For why this works, see the diagram: Binary Search Tree with Python List 
-        self.preOrderTraversal(index*2, traversal_result) # Visit left side of the tree
-        self.preOrderTraversal(index*2 + 1, traversal_result) # Visit the right side of the tree
+        self.preOrderTraversal(index*2, traversal_result, "L") # Visit left side of the tree
+        self.preOrderTraversal(index*2 + 1, traversal_result, "R") # Visit the right side of the tree
         return traversal_result
     
     # TC: O(n)
     # SC: O(n)
-    def inOrderTraversal(self, index, traversal_result=[]):
+    def inOrderTraversal(self, index, traversal_result=[], side="-"):
         if index > self.lastUsedIndex:
+            print("     Side: " + side + " Index: " + str(index) + " " + "Exit condition reached")
             return
-        self.inOrderTraversal(index*2, traversal_result) # Visit left side of the tree
+        self.inOrderTraversal(index*2, traversal_result, "L") # Visit left side of the tree
+        print("Side:", side, "Index:", index, "Node:", self.list[index])
         traversal_result.append(self.list[index])
-        self.inOrderTraversal(index*2 + 1, traversal_result)
+        self.inOrderTraversal(index*2 + 1, traversal_result, "R") # Visit the right side of the tree
         return traversal_result
     
-
+    # TC: O(n)
+    # SC: O(n)
+    def postOrderTraversal(self, index, traversal_result=[], side="-"):
+        if index > self.lastUsedIndex:
+            print("     Side: " + side + " Index: " + str(index) + " " + "Exit condition reached")
+            return
+        self.postOrderTraversal(index*2, traversal_result, "L")
+        self.postOrderTraversal(index*2+1, traversal_result, "R")
+        print("Side:", side, "Index:", index, "Node:", self.list[index])
+        traversal_result.append(self.list[index])
+        return traversal_result
     
-    def levelOrderTraversal(self):
+    def levelOrderTraversal(self, index):
         traversal_result = []
-        for i in range( 1, self.lastUsedIndex+1):
+        for i in range( index, self.lastUsedIndex+1):
             traversal_result.append(self.list[i])
         return traversal_result
+    
+    # TC: O(n)
+    # SC: O(1)
+    def deleteNode(self, value):
+        if self.lastUsedIndex == 0:
+            return "There are no nodes to delete"
+        # Loop over all the nodes in the tree to look for the value we want to change
+        for i in range(1, self.lastUsedIndex+1):
+            if self.list[i] == value: # If we've found the value we want to delete
+                self.list[i] = self.list[self.lastUsedIndex] # Change the value of the node we're deleting to that of the deepest node in the tree
+                self.list[self.lastUsedIndex] = None # Delete the deepest node in the tree, since its now in a different place
+                self.lastUsedIndex -= 1 # We just deleted a node, so decrement lastUsedIndex
+                return "The node has been updated"
 
-
+    def deleteEntireTree(self):
+        self.list = None
     
 
 mybt = BinaryTree(15)
@@ -78,7 +106,29 @@ mybt.insertNode("N9")
 print(mybt.list)
 
 #print("Pre-Order Traversal")
+
+#print("Level Order: ", mybt.levelOrderTraversal(1))
+#print("")
+#print("")
+#print("Pre Order:   ")
+#print(mybt.preOrderTraversal(1))
+#print("")
+#print("")
+#print("In Order:    ")
+#print(mybt.inOrderTraversal(1))
+#print("")
+#print("")
+#print("Post Order:  ")
+#print(mybt.postOrderTraversal(1))
+#print("")
+#print("")
+
+print("Level Order: ")
+print(mybt.levelOrderTraversal(1))
 print("")
-print("Level Order: ", mybt.levelOrderTraversal())
-print("Pre Order:   ", mybt.preOrderTraversal(1))
-print("In Order     ", mybt.inOrderTraversal(1))
+
+print(mybt.deleteNode("N4"))
+
+print("Level Order: ")
+print(mybt.levelOrderTraversal(1))
+print("")

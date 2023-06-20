@@ -99,11 +99,12 @@ hot.addChild(tea)
 # Traversal:
 #   1. Depth first search
 #      - PreOrder Traversal: Root node, left subtree, right subtree
+#      - InOrder Traversal: Left subtree, root node, right subtree
+#      - PostOrder Traversal: Left subtree, right subtree, root
 #
 #
-#
-#   Breadth first search
-#
+#   2. Breadth first search
+#      -Level order traversal: Top to bottom, left to right
 #
 
 # DFS - PreOrder Traversal
