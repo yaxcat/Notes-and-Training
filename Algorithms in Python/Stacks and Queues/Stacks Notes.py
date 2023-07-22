@@ -11,7 +11,7 @@
 
 # When to use or avoid:
 #   Use:
-#       - Whenever last in first out functionality is needed
+#       - Whenever last in first out functionality is needed (LIFO)
 #       - When data corruption is a concern.  Because there is only one point for data to enter or leave the stack, there is
 #         substantially less chance of corruption than with something like a list or array
 #   Avoid:
@@ -19,8 +19,8 @@
 
 # Stack operations:
 #   1. Create Stack - Just initialize an empty linked list.  Nothing else to it.
-#   2. Push - Insert an element in the stack.  Push always the element to the 'top' of the stack.  
-#   3. Pop - Removes al element from the top of the stack
+#   2. Push - Insert an element in the stack.  Push always puts the element on the 'top' of the stack.  
+#   3. Pop - Removes an element from the top of the stack
 #   4. Peek - Returns the top element of the stack, without deleting/removing that element
 #   5. isEmpty - Checks to see whether the stack is empty or not. Used prior to trying peek or pop.
 #   6. isFull - In some cases, the stack may have a size limit, this method checks if the stack is full.
@@ -77,7 +77,7 @@ class ListStackNoLim:
 
 
 
-#   B. Python list with no size limit:
+#   B. Python list with size limit:
 class ListStackWithLim:
     def __init__(self, maxSize):
         self.maxSize = maxSize
@@ -172,7 +172,7 @@ class LinkedListStack():
 
     def pop(self):
         if self.isEmpty() == True:
-            return "There list is empty.  There are no nodes to pop."
+            return "The list is empty.  There are no nodes to pop."
         else:
             return_val = self.list.head.value
             self.list.head = self.list.head.next
