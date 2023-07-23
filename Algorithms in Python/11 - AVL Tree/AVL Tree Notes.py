@@ -12,6 +12,15 @@
 #   operations.  The more 'linear' a tree starts to look, the more operational time compexity will tend towards
 #   O(n), instead of O(logN).  Performance of a binary tree is tied to the height of the tree.
 
+# For AVL tree node insertion, one of two scenarios will be true:
+#   1. Rotation (balancing) is not required
+#   2. Rotation (balancing) is required
+#       a.  left left condition (LL) - Rotate right       
+#       b.  left right condition (LR) - Rotate left, then right
+#       c.  right right condition (RR) - Rotate left
+#       d.  right left condition (RL) - Rotate right, then left
+# 
+# See diagrams for more details
 
 class AVLNode:
     def __init__(self, data):
@@ -58,76 +67,6 @@ def levelOrderTraversal(rootNode):
             q.enqueue(root.value.rightChild)
     return traversal_result
 
-
-def printablePreOrderTraversal(rootNode, tr=[], depth=0):
-    if not rootNode:
-        return
-    indent = " " * depth * 4
-    print(f"{indent}└── APPEND: {str(rootNode.data)})")
-    tr.append(str(rootNode.data))
-    if not rootNode.leftChild:
-        print_lc = 'None'
-    else:
-        print_lc = str(rootNode.leftChild.data)
-    if not rootNode.rightChild:
-        print_rc = 'None'
-    else:
-        print_rc = str(rootNode.rightChild.data)
-    
-    print(f"{indent}preOrderTraversal(rootNode={rootNode.data})")
-    print(f"{indent}│")
-    print(f"{indent}├── LEFT: preOrderTraversal({print_lc})")
-    printablePreOrderTraversal(rootNode.leftChild, tr, depth + 1)
-    print(f"{indent}└── RIGHT: preOrderTraversal({print_rc})")
-    printablePreOrderTraversal(rootNode.rightChild, tr, depth + 1)
-    return tr
-
-def printableInOrderTraversal(rootNode, tr=[], depth=0):
-    if not rootNode:
-        return
-    if not rootNode.leftChild:
-        print_lc = 'None'
-    else:
-        print_lc = str(rootNode.leftChild.data)
-    if not rootNode.rightChild:
-        print_rc = 'None'
-    else:
-        print_rc = str(rootNode.rightChild.data)
-    indent = " " * depth * 4
-    print(f"{indent}inOrderTraversal(rootNode={rootNode.data})")
-    print(f"{indent}│")
-    print(f"{indent}├── LEFT: inOrderTraversal({print_lc})")
-    printableInOrderTraversal(rootNode.leftChild, tr, depth+1)
-    print(f"{indent}└── APPEND: {str(rootNode.data)})")
-    tr.append(str(rootNode.data))
-    print(f"{indent}└── RIGHT: inOrderTraversal({print_rc})")
-    printableInOrderTraversal(rootNode.rightChild, tr, depth+1)
-    return tr
-
-
-def printablePostOrderTraversal(rootNode, tr=[], depth=0):
-    if not rootNode:
-        return 
-    
-    if not rootNode.leftChild:
-        print_lc = 'None'
-    else:
-        print_lc = str(rootNode.leftChild.data)
-    if not rootNode.rightChild:
-        print_rc = 'None'
-    else:
-        print_rc = str(rootNode.rightChild.data)
-    indent = " " * depth * 4
-    print(f"{indent}postOrderTraversal(rootNode={rootNode.data})")
-    print(f"{indent}│")
-    print(f"{indent}├── LEFT: postOrderTraversal({print_lc})")
-    printablePostOrderTraversal(rootNode.leftChild, tr, depth+1)
-    print(f"{indent}└── RIGHT: postOrderTraversal({print_rc})")
-    printablePostOrderTraversal(rootNode.rightChild, tr, depth+1)
-    print(f"{indent}└── APPEND: {str(rootNode.data)})")
-    tr.append(str(rootNode.data))
-    return tr
-
 # TC: O(logN) since we're halving the search area each time
 def searchNode(rootNode, searchVal):
     if rootNode.data == searchVal:
@@ -144,15 +83,12 @@ def searchNode(rootNode, searchVal):
             else:
                 searchNode(rootNode.rightChild, searchVal)
 
+def getHeight(rootNode):
+    if not rootNode:
+        return 0
+    else:
+        return rootNode.height
 
-
-# For AVL tree node insertion, one of two scenarios will be true:
-#   1. Rotation (balancing) is not required
-#   2. Rotation (balancing) is required
-#       a.  left left condition (LL)        
-#       b.  left right condition (LR)
-#       c.  right right condition (RR)
-#       d.  right left condition (RL)
 def insertNode(rootNode, newVal):
     if not rootNode:
         return "The tree does not exist"
@@ -168,29 +104,6 @@ def insertNode(rootNode, newVal):
             insertNode(rootNode.rightChild, newVal)
 
 
-mybt = AVLNode(70)
-
-insertNode(mybt, 50)
-insertNode(mybt, 90)
-insertNode(mybt, 30)
-insertNode(mybt, 60)
-insertNode(mybt, 80)
-insertNode(mybt, 100)
-insertNode(mybt, 20)
-insertNode(mybt, 40)
-insertNode(mybt, 95)
-insertNode(mybt, 105)
-
-print("PRE ORDER TRAVERSAL")
-print(printablePreOrderTraversal(mybt))
-print("\n"*2)
-print("IN ORDER TRAVERSAL")
-print(printableInOrderTraversal(mybt))
-print("\n"*2)
-print("POST ORDER TRAVERSAL")
-print(printablePostOrderTraversal(mybt))
-print("\n"*2)
-#print(levelOrderTraversal(mybt))
 
 
 #print(mybt.rightChild.rightChild.data)
