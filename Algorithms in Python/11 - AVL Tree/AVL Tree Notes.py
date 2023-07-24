@@ -83,12 +83,6 @@ def searchNode(rootNode, searchVal):
             else:
                 searchNode(rootNode.rightChild, searchVal)
 
-def getHeight(rootNode):
-    if not rootNode:
-        return 0
-    else:
-        return rootNode.height
-
 def insertNode(rootNode, newVal):
     if not rootNode:
         return "The tree does not exist"
@@ -104,6 +98,28 @@ def insertNode(rootNode, newVal):
             insertNode(rootNode.rightChild, newVal)
 
 
+def getHeight(rootNode):
+    if not rootNode:
+        return 0
+    else:
+        return rootNode.height
 
+# TC: O(1)
+# SC: O(1)
+# See AVL LL diagram for visual description
+def rotateRight(disbalancedNode):
+    # The left child of the disbalanced node becomes the root because its value is less than the disbalanced node but greater
+    # its own left child (the left granchild of the disbalanced node)
+    newRoot = disbalancedNode.leftChild 
+    # The left child of the disbalanced node is now replaced with the right child of the disbalanced node's leftchild because 
+    # that node is guaranteed to be less than the value of the disbalanced node, but greater than the value of the leftchild. 
+    # Therefore, it cannot possibly conflict (be greater than) the disbalanced node's existing right node  
+    disbalancedNode.leftChild = disbalancedNode.leftChild.rightChild
+    # We must update the height of the disbalanced node to the height of its left tree or right tree, whichever is greater. We 
+    # add 1 since we need to account for the disbalanced node itself too.
+    disbalancedNode.height = 1 + max(getHeight(disbalancedNode.leftChild), getHeight(disbalancedNode.rightChild))
+    # Need to update the height of the new root node since that also changed.  Basically the same thing.
+    newRoot.height = 1 + max(getHeight(newRoot.leftChild), getHeight(newRoot.rightChild))
+    return newRoot
 
 #print(mybt.rightChild.rightChild.data)
