@@ -83,21 +83,6 @@ def searchNode(rootNode, searchVal):
             else:
                 searchNode(rootNode.rightChild, searchVal)
 
-def insertNode(rootNode, newVal):
-    if not rootNode:
-        return "The tree does not exist"
-    if newVal < rootNode.data:
-        if not rootNode.leftChild:
-            rootNode.leftChild = AVLNode(newVal)
-        else:
-            insertNode(rootNode.leftChild, newVal)
-    else:
-        if not rootNode.rightChild:
-            rootNode.rightChild = AVLNode(newVal)
-        else:
-            insertNode(rootNode.rightChild, newVal)
-
-
 def getHeight(rootNode):
     if not rootNode:
         return 0
@@ -115,6 +100,7 @@ def rotateRight(disbalancedNode):
     # that node is guaranteed to be less than the value of the disbalanced node, but greater than the value of the leftchild. 
     # Therefore, it cannot possibly conflict (be greater than) the disbalanced node's existing right node  
     disbalancedNode.leftChild = disbalancedNode.leftChild.rightChild
+    newRoot.rightChild = disbalancedNode
     # We must update the height of the disbalanced node to the height of its left tree or right tree, whichever is greater. We 
     # add 1 since we need to account for the disbalanced node itself too.
     disbalancedNode.height = 1 + max(getHeight(disbalancedNode.leftChild), getHeight(disbalancedNode.rightChild))
@@ -122,4 +108,114 @@ def rotateRight(disbalancedNode):
     newRoot.height = 1 + max(getHeight(newRoot.leftChild), getHeight(newRoot.rightChild))
     return newRoot
 
-#print(mybt.rightChild.rightChild.data)
+
+# TC: O(1)
+# SC: O(1)
+# See AVL RR diagram for visual description
+def rotateLeft(disbalancedNode):
+    # The right child of the disbalanced node becomes the new root because it is greater than the disbalanced node but less
+    # than its right child, which allows it to have both a left and right child, after we perform the rotation
+    newRoot = disbalancedNode.rightChild
+    # The disbalanced node's right child is set to its right child's left child because that value will be gauranteed to be
+    # greater than the disbalanced node, but less than the right child itself.  Because its also guranteed to be greater than
+    # the disbalanced node's existing left child, it can slide right into the open right child spot without causing any
+    # problems
+    disbalancedNode.rightChild = disbalancedNode.rightChild.leftchild
+    # Update the new root's left child to point to the disbalanced node, because that node is smaller than the new root.  Note
+    # how the new right child (disbalanced node) child references carry right over and the correct shape is formed.  Very clever
+    newRoot.leftChild = disbalancedNode
+    # We must update the height of the disbalanced node to the height of its left tree or right tree, whichever is greater. We 
+    # add 1 since we need to account for the disbalanced node itself too.
+    disbalancedNode.height = 1 + max(getHeight(disbalancedNode.leftChild), getHeight(disbalancedNode.rightChild))
+    # Need to update the height of the new root node since that also changed.  Basically the same thing.
+    newRoot.height = 1 + max(getHeight(newRoot.leftChild), getHeight(newRoot.rightChild))
+    return newRoot
+
+# TC O(1)
+# SC O(1)
+# Subtracts the height of the right subtree from that of the left subtree in order to find the balance
+def getBalance(rootNode):
+    if not rootNode:
+        return 0
+    return getHeight(rootNode.leftChild) - getHeight(rootNode.rightChild)
+
+# TC O(logN) - due to the recursive function calls
+# SC O(logN) - due to the recursive function calls
+def insertNode(rootNode, nodeValue):
+    # if the tree is empty, create a root node
+    if not rootNode:
+        return AVLNode(nodeValue)
+    # If the node value we wish to insert is less than the root node, call the insert function recursively until we find a spot to
+    # insert it
+    elif nodeValue < rootNode.data:
+        rootNode.leftChild = insertNode(rootNode.leftChild, nodeValue)
+    # If the value for the node we wish to insert is greater than the root node, recursively call the insert function until we find
+    # the insertion point
+    else:
+        rootNode.rightChild = insertNode(rootNode.rightChild, nodeValue)
+    # Update the height of the root node to account for the fact that we inserted a new node.  The height of the root will be 1 plus
+    # the height of the left subtree or the right subtree, whichever is greater.
+    rootNode.height = 1 + max(getHeight(rootNode.leftChild), getHeight(rootNode.rightChild))
+    # Get the balance to understand if we we need to rotate the nodes.  We know that any time we have a balance of greater than 1,
+    # rotation is required.  
+    balance = getBalance(rootNode)
+    # LL condition - if the node we wish to insert is less than the left child of the root node.  We know this because if it is
+    # we effectively have 'three left node's in a line', which is no good.
+    if balance > 1 and nodeValue < rootNode.leftChild.data:
+        return rotateRight(rootNode)
+    # LR condition - if the node we're inserting is greater than the value of the root node's left child
+    if balance > 1 and nodeValue > rootNode.leftChild.data:
+        # First rotate left.  We're passing in the 'middle node' between the root and disbalanced right child here because when we
+        # do, we effectively cause the root's left child and the left childs right child to swap places.  That gives us a nice line
+        # of left nodes (LL condition) to work with
+        rootNode.leftChild = rotateLeft(rootNode.leftChild)
+        # Now all we have to do is take that chain of three nodes and rotate it right
+        return rotateRight(rootNode)
+    # RR condition - if the node we're inserting is greater than the right child of the root node.  A negative balance indicates that
+    # the right side is bigger
+    if balance < -1 and nodeValue > rootNode.rightChild.data:
+        return rotateLeft(rootNode)
+    # RL condition - if the node were inserting is less than the right child of the root node
+    if balance < -1 and nodeValue < rootNode.rightChild.data:
+        # First rotate right.  Passing in the right child of the root as our disbalanced node causes the rotateRight() function to flip
+        # the position of the right child and its left child.  What we get is a nice even line down the right side (RR condition), which 
+        # is exactly what we want.
+        rootNode.rightChild = rotateRight(rootNode.rightChild)
+        # Then rotate left
+        return rotateLeft(rootNode)
+    
+
+# Returns the minimum value of an AVL tree.  Necessary because when deleting a node with two children, we need to find a successor,
+# which can take the deleted node's place.  The successor is the minimum node in the right subtree since that node is greater than
+# all values on the left subtree, but also less than all values on the right subtree.  This property allows it to slide right into
+# the spot previously occupied by the deleted node.
+def getMinValueNode(rootNode):
+    # If there is no root, or if we have reached the end of the left subtree, return the root node.  This will be the minimum value
+    if rootNode is None or rootNode.leftChild is None:
+        return rootNode
+    # if the tree has multiple nodes, recursively call the function so that we traverse the entire left side of the tree from the 
+    # root node
+    return getMinValueNode(rootNode.leftChild)
+
+def deleteNode(rootNode, nodeValue):
+    # Base case
+    if not rootNode:
+        return rootNode
+    # Recursively call the delete function on the right or left subtree depending on the value of the node we wish to delete
+    elif nodeValue < rootNode.data:
+        rootNode.leftChild = deleteNode(rootNode.leftChild, nodeValue)
+    elif nodeValue > rootNode.data:
+        rootNode.rightChild = deleteNode(rootNode.rightChild, nodeValue)
+    # Once we have found the node we wish to delete
+    else:
+        # If we want to delete a node which has a right child
+        if rootNode.leftChild is None:
+            temp = rootNode.rightChild
+            rootNode = None # Set the node that we want to delete to none
+            return temp # we return the right child and it becomes the left node of the parent of the deleted node due to the recursive structure of the function call
+        elif rootNode.rightChild is None:
+            temp = rootNode.leftChild
+            rootNode = None # Set the node that we want to delete to none
+            return temp # By returning the left child, it is handled handled recursively such that it becomes the right child of the parent of the deleted node
+        
+        # If the node we wish to delete has two children, we have to identify the successors
