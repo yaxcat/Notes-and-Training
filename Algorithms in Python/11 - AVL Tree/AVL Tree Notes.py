@@ -194,28 +194,48 @@ def getMinValueNode(rootNode):
     if rootNode is None or rootNode.leftChild is None:
         return rootNode
     # if the tree has multiple nodes, recursively call the function so that we traverse the entire left side of the tree from the 
-    # root node
+    # root node down
     return getMinValueNode(rootNode.leftChild)
 
 def deleteNode(rootNode, nodeValue):
     # Base case
     if not rootNode:
         return rootNode
-    # Recursively call the delete function on the right or left subtree depending on the value of the node we wish to delete
+    # Rotation is not required________________________________________________________________________________________________________
+    # Look for the node by recursively calling the function on the right or left subtree depending on the value of the node we wish to 
+    # delete
     elif nodeValue < rootNode.data:
-        rootNode.leftChild = deleteNode(rootNode.leftChild, nodeValue)
+        rootNode.leftChild = deleteNode(rootNode.leftChild, nodeValue) # Assign the root node's left child the returned temp value
     elif nodeValue > rootNode.data:
-        rootNode.rightChild = deleteNode(rootNode.rightChild, nodeValue)
+        rootNode.rightChild = deleteNode(rootNode.rightChild, nodeValue) # Assign the root node's right child the returned temp value
     # Once we have found the node we wish to delete
     else:
         # If we want to delete a node which has a right child
         if rootNode.leftChild is None:
-            temp = rootNode.rightChild
-            rootNode = None # Set the node that we want to delete to none
-            return temp # we return the right child and it becomes the left node of the parent of the deleted node due to the recursive structure of the function call
+            temp = rootNode.rightChild # The right child might have a value or it might be null.  If right child has a value, it is a leaf node, if right child is also None, than the root is a leaf node
+            rootNode = None # Delete the target node
+            return temp # Returning temp will cause it to replace the target node we just deleted via the recursive function calls above
         elif rootNode.rightChild is None:
-            temp = rootNode.leftChild
-            rootNode = None # Set the node that we want to delete to none
-            return temp # By returning the left child, it is handled handled recursively such that it becomes the right child of the parent of the deleted node
+            temp = rootNode.leftChild # The left child might have a value or it might be null.  If left child has a value, it is a leaf node, if left child is also None, than the root is a leaf node
+            rootNode = None # Delete the target node
+            return temp # Returning temp will cause it to replace the target node we just deleted via the recursive function calls above
         
         # If the node we wish to delete has two children, we have to identify the successors
+        successor = getMinValueNode(rootNode.rightChild) # Use this function to ID the successor node
+        rootNode.data = successor.data # In order to accomplish the delete, replace the root node's data with that of the successor node
+        rootNode.rightChild = deleteNode(rootNode.rightChild, successor.data) # Now we must delete the original successor node, so call the delete function recursively
+    # Now check to see if we need to perform an rotations
+    balance = getBalance(rootNode)
+    if balance > 1 and getBalance(rootNode.leftChild) >= 0: # LL condition
+        return rotateRight(rootNode) # All we need to do is rotate right
+    if balance < -1 and getBalance(rootNode.rightChild) <= 0: # RR condition
+        return rotateLeft(rootNode) # All we need to do is rotate left
+    if balance > 1 and getBalance(rootNode.leftChild) < 0: # RL condition - Perform a right rotation on the left child
+        rootNode.leftChild = rotateLeft(rootNode.leftChild)
+        return rotateRight(rootNode) 
+    if balance < -1 and getBalance(rootNode.rightChild) > 0: #LR condition - Perform a left rotation on the right child
+        rootNode.rightChild = rotateRight(rootNode.rightChild)
+        return rotateLeft(rootNode)
+    
+    return rootNode
+
