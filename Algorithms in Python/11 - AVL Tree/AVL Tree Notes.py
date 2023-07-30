@@ -197,6 +197,8 @@ def getMinValueNode(rootNode):
     # root node down
     return getMinValueNode(rootNode.leftChild)
 
+# TC: O(logN)
+# SC: O(logN) - due to the call stack
 def deleteNode(rootNode, nodeValue):
     # Base case
     if not rootNode:
@@ -239,3 +241,10 @@ def deleteNode(rootNode, nodeValue):
     
     return rootNode
 
+# TC: O(1)
+# TC: O(1)
+def deleteAVLTree(rootNode):
+    rootNode.data = None
+    rootNode.rightChild = None
+    rootNode.rightChild = None
+    return "The AVL tree was successfully deleted"
