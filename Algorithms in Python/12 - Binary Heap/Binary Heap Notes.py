@@ -37,7 +37,27 @@ def getHeapSize(rootNode):
         return "The heap is empty"
     else:
         return rootNode.heapSize
-    
+
+# LOT is easy since we're using a list to store the data
+def levelOrderTraversal(rootNode):
+    if not rootNode:
+        return "The heap is empty"
+    else:
+        for i in range(1, rootNode.heapSize+1): # Start at 1 because the 0 slot is always left empty
+            print(rootNode.customList[i])
+
 mybh = Heap(10)
-print(getHeapSize(mybh)) # prints 0
-print(getHeapSize(None))
+
+# Maintains the heap structure of the data
+def heapifyTreeInsert(rootNode, index, heapType):
+    parentIndex = int(index/2)
+    if index <= 1:
+        return "Reached the top of the heap"
+    if heapType == "Min":
+        # In a minimum heap, the root node must always be less than its children, so if the child we
+        # just inserted is less than its parent, we have a problem
+        if rootNode.customList[index] < rootNode.customList[parentIndex]:    
+            temp = rootNode.customList[index] # Create a temporary node equal to the node we just inserted
+            rootNode.customList[index] = rootNode.customList[parentIndex] # Because the new node is less than its parent, move the parent to the location of the new node
+            rootNode.customList[parentIndex] = temp # Now, change set the parent node slot as equal to the new node, since its smaller than the original parent
+        heapifyTreeInsert(rootNode, parentIndex, heapType) # Recursively call the function so that we can walk all the way up the tree if we need to
