@@ -16,8 +16,8 @@
 
 
 # Creating the heap
-# TC: O(1)
-# SC: O(1) - because we're creating a new Python list with n elements
+# TC: O(1) - Initialization of the list is cheap
+# SC: O(n) - because we're creating a new Python list with n elements
 class Heap:
     def __init__(self, size):
         self.customList = (size+1) * [None] # create an empty list equal to the size paramter plus one
@@ -39,6 +39,8 @@ def getHeapSize(rootNode):
         return rootNode.heapSize
 
 # LOT is easy since we're using a list to store the data
+# TC: O(n)
+# SC: O(1)
 def levelOrderTraversal(rootNode):
     if not rootNode:
         return "The heap is empty"
@@ -49,6 +51,8 @@ def levelOrderTraversal(rootNode):
 mybh = Heap(10)
 
 # Maintains the heap structure of the data
+# TC: O(logN) since we do a recursive function call on the binary tree
+# SC: O(logN) Since we will insert logN # of nodes in the stack memory 
 def heapifyTreeInsert(rootNode, index, heapType):
     parentIndex = int(index/2)
     if index <= 1:
@@ -56,8 +60,41 @@ def heapifyTreeInsert(rootNode, index, heapType):
     if heapType == "Min":
         # In a minimum heap, the root node must always be less than its children, so if the child we
         # just inserted is less than its parent, we have a problem
-        if rootNode.customList[index] < rootNode.customList[parentIndex]:    
-            temp = rootNode.customList[index] # Create a temporary node equal to the node we just inserted
-            rootNode.customList[index] = rootNode.customList[parentIndex] # Because the new node is less than its parent, move the parent to the location of the new node
+        child_node = rootNode.customList[index] # New node
+        parent_node = rootNode.customList[parentIndex] # Existing node
+        if child_node < parent_node:    
+            temp = child_node # Create a temporary node equal to the node we just inserted
+            rootNode.customList[index] = parent_node # Because the new node is less than its parent, move the parent to the location of the new node
             rootNode.customList[parentIndex] = temp # Now, change set the parent node slot as equal to the new node, since its smaller than the original parent
-        heapifyTreeInsert(rootNode, parentIndex, heapType) # Recursively call the function so that we can walk all the way up the tree if we need to
+        heapifyTreeInsert(rootNode, parentIndex, heapType) # Recursively call the function so that we can walk all the way up the tree if we need to 
+    elif heapType == "Max":
+        # If the heap type is max, the root node must always be greater than all its children, so if
+        # the node we just inserted is greater than its parent, we must adjust.
+        child_node = rootNode.customList[index]
+        parent_node = rootNode.customList[parentIndex]
+        if child_node > parent_node:
+            temp = child_node
+            rootNode.customList[index] = parent_node # Swap parent and child
+            rootNode.customList[parentIndex] = temp
+        heapifyTreeInsert(rootNode, parentIndex, heapType) # Passing in parentIndex is what allows us to walk up the tree
+
+# Inserts a node into the heap
+def insertNode(rootNode, nodeValue, heapType):
+    if rootNode.heapSize + 1 == rootNode.maxSize:
+        return "The binary heap is full."
+    # If the binary heap is not full, insert the new node at the next open spot in the heap/list
+    rootNode.customList[rootNode.heapSize + 1] = nodeValue # The node probably won't be in the right position, but that doesn't matter...
+    rootNode.heapSize += 1 
+    heapifyTreeInsert(rootNode, rootNode.heapSize, heapType) # Because we call heapify to move that node to the correct position
+    return "The node has been successfully inserted."
+    
+
+
+# Test the code so far:
+myHeap = Heap(5)
+print(insertNode(myHeap, 4, "Max"))
+print(insertNode(myHeap, 5, "Max"))
+print(insertNode(myHeap, 2, "Max"))
+print(insertNode(myHeap, 1, "Max"))
+levelOrderTraversal(myHeap)
+
