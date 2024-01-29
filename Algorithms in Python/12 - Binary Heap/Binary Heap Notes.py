@@ -91,10 +91,97 @@ def insertNode(rootNode, nodeValue, heapType):
 
 
 # Test the code so far:
+#myHeap = Heap(5)
+#print(insertNode(myHeap, 4, "Max"))
+#print(insertNode(myHeap, 5, "Max"))
+#print(insertNode(myHeap, 2, "Max"))
+#print(insertNode(myHeap, 1, "Max"))
+#levelOrderTraversal(myHeap)
+
+# Maintains the binary heap structure in the event we want to extract a node.
+# Since this is a binary heap, the only node that can be extracted is the topmost
+# (root node).  When performing an extraction, we remove the root node and replace
+# it with the last node in the list, since using the last node means we won't
+# accidentally break the tree structure
+def heapifyTreeExtract(rootNode, index, heapType):
+    leftIndex = index * 2
+    rightIndex = index * 2 + 1
+    swapChild = 0
+
+    # First, check to see if the current node has any children
+    if rootNode.heapSize < leftIndex: 
+        return "No child nodes (heap size < left index)."
+    # If the heap size is the same as the left index, we know we only have one
+    # child node, and its the left node
+    elif rootNode.heapSize == leftIndex:
+        parent_node = rootNode.customList[index] 
+        child_node = rootNode.customList[leftIndex]
+        # Logic differs slightly depending on whether its a min or max heap
+        if heapType == "Min":
+            # If the parent is bigger than the child, the min heap property has
+            # been broken, so have the parent and child swap places.
+            if parent_node > child_node:
+                temp = parent_node
+                rootNode.customList[index] = child_node
+                rootNode.customList[leftIndex] = temp
+            return # We can exit the function safely, since we have found the bottom of the tree
+        else: # Max heap
+            # Do basically the same thing, but switch the inequality statement
+            if parent_node < child_node:
+                temp = parent_node
+                rootNode.customList[index] = child_node
+                rootNode.customList[leftIndex] = temp
+            return # We can exit the function safely, since we have found the bottom of the tree
+    # If the node has two children
+    else:
+        parent_node = rootNode.customList[index]
+        left_child = rootNode.customList[leftIndex]
+        right_child = rootNode.customList[rightIndex]
+        if heapType == "Min":
+            # Since this is a minimum heap, we're looking for the smaller of the 
+            # two children
+            if left_child < right_child:
+                swapChild = leftIndex
+            else:
+                swapChild = rightIndex
+            if parent_node > swapChild:
+                temp = parent_node
+                rootNode.customList[index] = rootNode.customList[swapChild]
+                rootNode.customList[swapChild] = temp
+        else: # Max heap
+            # Do the same thing, but switch the inequality statement
+            if left_child > right_child:
+                swapChild = leftIndex
+            else:
+                swapChild = rightIndex
+            if parent_node < swapChild:
+                temp = parent_node
+                rootNode.customList[index] = rootNode.customList[swapChild]
+                rootNode.customList[swapChild] = temp
+    # If We must call the function recursively until we reach the correct spot
+    heapifyTreeExtract(rootNode, swapChild, heapType)
+
+# Extract node function
+# TC: O(logN) since we do a recursive function call on the binary tree
+# SC: O(logN) Since we will insert logN # of nodes in the stack memory 
+def extractNode(rootNode, heapType):
+    result = rootNode.customList[1] # Extracted node will always be the first node in the tree
+    rootNode.customList[1] = rootNode.customList[rootNode.heapSize] # Set the root node to last node in the tree
+    rootNode.customList[rootNode.heapSize] = None # Now delete that last node, since its our root node
+    rootNode.heapSize -= 1
+    heapifyTreeExtract(rootNode, 1, heapType) # Now start at the top and recursively work our way down the tree, until our new root (formerly last) node is in the right spot
+    return result
+
+# Test the code so far:
 myHeap = Heap(5)
 print(insertNode(myHeap, 4, "Max"))
 print(insertNode(myHeap, 5, "Max"))
 print(insertNode(myHeap, 2, "Max"))
 print(insertNode(myHeap, 1, "Max"))
+print("The unaltered heap")
 levelOrderTraversal(myHeap)
-
+print("\n")
+extractNode(myHeap, "Max")
+print("The new heap")
+levelOrderTraversal(myHeap)
+print("\n")
