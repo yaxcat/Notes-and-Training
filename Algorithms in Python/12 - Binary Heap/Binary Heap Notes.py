@@ -185,3 +185,8 @@ extractNode(myHeap, "Max")
 print("The new heap")
 levelOrderTraversal(myHeap)
 print("\n")
+
+# TC: O(1)
+# SC: O(1)
+def deleteEntireBH(rootNode):
+    rootNode.customList = None
