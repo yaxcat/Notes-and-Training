@@ -27,7 +27,21 @@ class Trie:
     def __init__(self):
         self.rootNode = TrieNode() # All we need to do here is initialize a blank root node
 
+
+    def insertString(self, word):
+        current = self.rootNode
+        for i in word:
+            ch = i
+            node = current.children.get(ch)
+            if node == None:
+                node = TrieNode()
+                current.children.update({ch:node})
+            current = node
+        current.endOfString = True
+        print("Successfully inserted")
     
+
+    """
     # Inserting a string - 
         # A few scenarios - 
             # 1) Trie is blank
@@ -39,7 +53,7 @@ class Trie:
     def insertString(self, word):
         current = self.rootNode
         for letter in word:
-            node = current.children.get((letter)) # Attempt to retrieve letter from trie
+            node = current.children.get(letter) # Attempt to retrieve letter from trie
             # Check to see if the letter is in the Trie
             if node == None:
                 node = TrieNode() # If the letter is not there, create a new node to hold it
@@ -47,10 +61,48 @@ class Trie:
             current = node # update current so that we can work our way down the trie
         current.endOfString = True # After everything is done, make sure we're tagging the branch as EOS
         print(f"Successfully inserted {word}")
+    """
 
+    # Searching for a string:
+        # Scenarios - 
+            # 1) String does not exist in Trie
+            # 2) String does exist
+            #    - EOS must read true
+            # 3) String is a prefix of another string in Trie, but does not exist in Trie
+            #    -EOS for the prefix will read false/not exist
+    # TC: O(m) 
+    # SC: O(1)
+    def searchString(self, word):
+        currentNode = self.rootNode
+        for letter in word:
+            node = currentNode.children.get(letter)
+            if node == None:
+                print("---Node is none")
+                return False # Scenario 1
+            currentNode = node    
 
+            nodeChildren = [", ".join(key) for key in node.children]
+            print(nodeChildren, "||", node.endOfString)
+
+            if currentNode.endOfString == True:
+                print("---Node found!")
+                return True # Scenario 2
+            else:
+                print("---Node does not have EOS == True")
+                return False # Scenario 3
+        print("\n\n\n")
 
 
 newTrie = Trie()
 newTrie.insertString("App")
-newTrie.insertString("Apple")
+print("\n\n")
+#newTrie.insertString("Apple")
+#newTrie.searchString("App")
+#print(newTrie.rootNode["A"])
+
+print(newTrie.rootNode.children, "||", newTrie.rootNode.endOfString)
+print("A", newTrie.rootNode.children["A"], "||", newTrie.rootNode.children["A"].endOfString)
+print("p", newTrie.rootNode.children["A"].children["p"], "||", newTrie.rootNode.children["A"].children["p"].endOfString)
+print("p", newTrie.rootNode.children["A"].children["p"].children["p"], "||", newTrie.rootNode.children["A"].children["p"].children["p"].endOfString)
+
+print("\n\n\n")
