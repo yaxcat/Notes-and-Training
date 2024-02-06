@@ -27,7 +27,7 @@ class Trie:
     def __init__(self):
         self.rootNode = TrieNode() # All we need to do here is initialize a blank root node
 
-
+    """
     def insertString(self, word):
         current = self.rootNode
         for i in word:
@@ -39,9 +39,9 @@ class Trie:
             current = node
         current.endOfString = True
         print("Successfully inserted")
-    
-
     """
+
+
     # Inserting a string - 
         # A few scenarios - 
             # 1) Trie is blank
@@ -61,8 +61,8 @@ class Trie:
             current = node # update current so that we can work our way down the trie
         current.endOfString = True # After everything is done, make sure we're tagging the branch as EOS
         print(f"Successfully inserted {word}")
-    """
 
+    
     # Searching for a string:
         # Scenarios - 
             # 1) String does not exist in Trie
@@ -77,27 +77,23 @@ class Trie:
         for letter in word:
             node = currentNode.children.get(letter)
             if node == None:
-                print("---Node is none")
+                print("Node is not present.")
                 return False # Scenario 1
             currentNode = node    
-
-            nodeChildren = [", ".join(key) for key in node.children]
-            print(nodeChildren, "||", node.endOfString)
-
-            if currentNode.endOfString == True:
-                print("---Node found!")
-                return True # Scenario 2
-            else:
-                print("---Node does not have EOS == True")
-                return False # Scenario 3
-        print("\n\n\n")
+        if currentNode.endOfString == True:
+            print("Node found!.")
+            return True # Scenario 2
+        else:
+            print("Word is only a prefix.")
+            return False # Scenario 3
+        
 
 
 newTrie = Trie()
-newTrie.insertString("App")
+newTrie.insertString("Apple")
 print("\n\n")
 #newTrie.insertString("Apple")
-#newTrie.searchString("App")
+newTrie.searchString("App")
 #print(newTrie.rootNode["A"])
 
 print(newTrie.rootNode.children, "||", newTrie.rootNode.endOfString)
