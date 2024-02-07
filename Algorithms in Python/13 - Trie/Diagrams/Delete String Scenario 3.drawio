@@ -1,0 +1,76 @@
+<mxfile host="Electron" modified="2024-02-07T13:38:09.087Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.18 Chrome/120.0.6099.199 Electron/28.1.2 Safari/537.36" etag="8jxTAOK0y6i2vx-i8TIm" version="22.1.18" type="device">
+  <diagram name="Page-1" id="16XjI0kiUn-NuyR_T_i7">
+    <mxGraphModel dx="1011" dy="1060" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dFhbQ2jlh1eT3Z2HHcco-13" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;curved=1;" parent="1" source="dFhbQ2jlh1eT3Z2HHcco-1" target="dFhbQ2jlh1eT3Z2HHcco-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dFhbQ2jlh1eT3Z2HHcco-1" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;A&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" parent="1" vertex="1">
+          <mxGeometry x="340" y="150" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dFhbQ2jlh1eT3Z2HHcco-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" parent="1" source="dFhbQ2jlh1eT3Z2HHcco-2" target="dFhbQ2jlh1eT3Z2HHcco-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dFhbQ2jlh1eT3Z2HHcco-2" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;P&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" parent="1" vertex="1">
+          <mxGeometry x="280" y="240" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dFhbQ2jlh1eT3Z2HHcco-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" parent="1" source="dFhbQ2jlh1eT3Z2HHcco-4" target="dFhbQ2jlh1eT3Z2HHcco-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dFhbQ2jlh1eT3Z2HHcco-4" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;I.&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" parent="1" vertex="1">
+          <mxGeometry x="230" y="330" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="dFhbQ2jlh1eT3Z2HHcco-5" target="NCGhJBN-21cvcJwLRavN-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dFhbQ2jlh1eT3Z2HHcco-5" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;S&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" parent="1" vertex="1">
+          <mxGeometry x="190" y="415" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-7" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;.&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" vertex="1" parent="1">
+          <mxGeometry x="170" y="515" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-8" value="AP is designated as a string by EOS == True in Child Node" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="290" y="315" width="90" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-10" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;rotation=35;" vertex="1" parent="1">
+          <mxGeometry x="260" y="110" width="20" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-11" value="We want to keep AP, but delete APIS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="190" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-12" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="340" as="sourcePoint" />
+            <mxPoint x="710" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-37" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;curved=1;" edge="1" parent="1" source="NCGhJBN-21cvcJwLRavN-38" target="NCGhJBN-21cvcJwLRavN-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-38" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;A&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="960" y="190" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="NCGhJBN-21cvcJwLRavN-40" target="NCGhJBN-21cvcJwLRavN-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-40" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;P&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="900" y="280" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-42" value="&lt;font size=&quot;3&quot;&gt;&lt;b&gt;.&lt;/b&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="850" y="370" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-46" value="I is deleted and replaced with an empty node where EOS == True" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="910" y="355" width="90" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-47" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;rotation=35;" vertex="1" parent="1">
+          <mxGeometry x="880" y="150" width="20" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="NCGhJBN-21cvcJwLRavN-48" value="AP is kept and downstream nodes are deleted" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="770" y="160" width="110" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
