@@ -86,8 +86,24 @@ class Trie:
         else:
             print("Word is only a prefix.")
             return False # Scenario 3
-        
 
+
+ # Deleting a string from a tree:
+    # Scenarios - 
+        # 1) Prefix is shared between two words (the AP in API & APPLE for example)     
+        # 2) String to delete is a prefix of a string that will be kept (the API in APIS for example)
+        # 3) The string that will be kept is a prefix of a string that will be deleted
+        # 4) No nodes depend on the string that will be deleted
+
+    def deleteString(self, rootNode, word, index):
+        letter = word[index]
+        currentNode = rootNode.children.get(letter)
+        deletableNode = False
+
+        # Scenario 1
+        if len(currentNode.children) > 1: # If the current node has more than one children (letters) it means it is shared by multiple words
+            deleteString(currentNode, word, index+1) # # If that's true, recursively walk down the tree until we've finished the word
+            return False # This will be assigned to deletableNode in subsequent parts of the function
 
 newTrie = Trie()
 newTrie.insertString("Apple")
