@@ -95,26 +95,52 @@ class Trie:
         # 3) The string that will be kept is a prefix of a string that will be deleted
         # 4) No nodes depend on the string that will be deleted
 
-    def deleteString(self, rootNode, word, index):
-        letter = word[index]
-        currentNode = rootNode.children.get(letter)
-        deletableNode = False
+def deleteString(rootNode, word, index):
+    letter = word[index]
+    currentNode = rootNode.children.get(letter)
+    deletableNode = False
 
-        # Scenario 1
-        if len(currentNode.children) > 1: # If the current node has more than one children (letters) it means it is shared by multiple words
-            deleteString(currentNode, word, index+1) # # If that's true, recursively walk down the tree until we've finished the word
-            return False # This will be assigned to deletableNode in subsequent parts of the function
+    # Scenario 1
+    if len(currentNode.children) > 1: # If the current node has more than one children (letters) it means it is shared by multiple words
+        deleteString(currentNode, word, index+1) # # If that's true, recursively walk down the tree until we've finished the word
+        print("Scenario 1")
+        return False # This will be assigned to deletableNode in subsequent parts of the function
+    
+    # Scenario 2
+    if index == len(word) - 1: # If we've reached the end of the word
+        if len(currentNode.children) >= 1: # But not the end of the trie...
+            currentNode.endOfString = False # Just set the EOS to false to delete the word but keep it as a prefix
+            print("Scenario 2")
+            return False # We don't want to delete that last node, just set its EOS to false
+        else: # Just in case we haven't reached the end of the word
+            rootNode.children.pop(letter) # Pop the letter obj from the dictionary
+            print("Scenario 2")
+            return True # Return true since this will in fact be a deletable node.  We know this because the if statement on scenario 1 would have fired.
+    
+    # Scenario 3
+    if currentNode.endOfString == True: # We've reached an EOS, but not the end of the word.  We know know this because If statement 2 would have fired.
+        deleteString(currentNode, word, index+1) # Recursively call the deleteString method. The part of the word we want to delete will be handled by the scenario 2 if block
+        print("Scenario 3")
+        return False # We don't want to delete prefix, which will be found first
+    
+    # Scenario 4
+    deleteableNode = deleteString(currentNode, word, index +1) # Recursively call the function since it will return true if it finds a node with no dependents
+    if deletableNode == True: # Now, if we've found a deletable node
+        rootNode.children.pop(letter) # Pop it, since we no it has no children
+        print("Scenario 4")
+        return True
+    else: # If we haven't found a deletable node, just return false
+        print("Scenario 4")
+        return False
+        
+
+
 
 newTrie = Trie()
+newTrie.insertString("App")
 newTrie.insertString("Apple")
-print("\n\n")
-#newTrie.insertString("Apple")
+deleteString(newTrie.rootNode,"App", 0)
 newTrie.searchString("App")
-#print(newTrie.rootNode["A"])
 
-print(newTrie.rootNode.children, "||", newTrie.rootNode.endOfString)
-print("A", newTrie.rootNode.children["A"], "||", newTrie.rootNode.children["A"].endOfString)
-print("p", newTrie.rootNode.children["A"].children["p"], "||", newTrie.rootNode.children["A"].children["p"].endOfString)
-print("p", newTrie.rootNode.children["A"].children["p"].children["p"], "||", newTrie.rootNode.children["A"].children["p"].children["p"].endOfString)
 
 print("\n\n\n")
