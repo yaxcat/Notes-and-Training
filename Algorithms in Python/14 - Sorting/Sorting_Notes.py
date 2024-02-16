@@ -30,7 +30,7 @@
 # list that has not yet been fully sorted.  This allows us to perform the necessary number of iterations but also avoid
 # pointlessly traversing to the end of the list each time
 def bubbleSort(sort_list):
-    for i in range(0, len(sort_list) -1): # Defines the entire length of the list
+    for i in range(0, len(sort_list) -1): # Defines the entire length of the list. 
         for j in range(0, len(sort_list) - i - 1): # Defines the length of the list for which we have not yet sorted everything
             if sort_list[j] > sort_list[j+1]: # If the first value is greater than the second value then...
                 sort_list[j], sort_list[j+1] = sort_list[j+1], sort_list[j] # Swap them
@@ -57,11 +57,33 @@ def selectionSort(sort_list):
 
 
 
+# Insertion Sort
+# ---------------------------------------------------------------------
+# TC: O(n^2) due to the nested loops
+# SC: O(1) since sorting is in-place
+# Similar to selection sort - the array is divided into two parts: sorted and unsorted.  The strategy is to take the first element
+# from the unsorted part and find its correct position in the sorted part.  This process is repeated until the unsorted section is
+# empty.  Sorted part of the list will be on the left hand side and unsorted on the right.
+def insertionSort(sort_list):
+    # Start by iterating forwards (left to right) through the list
+    for leading_index in range(1, len(sort_list)): # Start at 1 because we're comparing each element with the one leading it in the list
+        leading_value = sort_list[leading_index]
+        trailing_index = leading_index - 1
+        # For each forward iteration, work backwards through the sorted part of the list looking for the correct spot to insert the
+        # value found at the forward iteration.  This 'inserts' it in the sorted list.
+        while trailing_index > 0 and leading_value < sort_list[trailing_index]: # While we have a valid list index and the leading value is greater than the trailing value...
+            sort_list[leading_index] = sort_list[trailing_index] # Swap the values
+            trailing_index -= 1 # Work backwards through the sorted section until we've found the right spot
+        sort_list[leading_index] = leading_value # Set the leading value back to what it was
+    return sort_list
 
 # Testing
 my_list = [2,1,7,6,5,3,4,9,8]
-print("\n\n Bubble Sort:")
-print(bubbleSort(my_list))
+#print("\n\n Bubble Sort:")
+#print(bubbleSort(my_list))
 
-print("\n\n Selection Sort:")
-print(bubbleSort(my_list))
+#print("\n\n Selection Sort:")
+#print(selectionSort(my_list))
+
+print("\n\n Insertion Sort:")
+print(insertionSort(my_list))
