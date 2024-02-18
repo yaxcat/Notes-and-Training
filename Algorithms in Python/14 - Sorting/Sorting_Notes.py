@@ -117,6 +117,73 @@ def bucketSort(sort_list):
     
     return return_list
 
+# Merge Sort
+# ---------------------------------------------------------------------
+# TC: O(n(logN))
+# SC: O(N) because of all the subarrays
+# Merge sort works by continually dividing the list in half; it is a divide-and-conquer algorithm.  Once elements in the list have been atomized 
+# using this process, they are merged back together into a single list.  Ordering is achieved by identifying the higher and lower values 
+# during each step in the merging process.  The number of elements in each array decreases by roughly half during each division until single
+# elements are obtained.  This is reversed during the merger step, with the number of elements in each array roughly doubling during each step
+# in the aggregation process.  The elements are merged back into their original container at each step until they all wind up back in the orginal
+# container.  Useful when you need stable sorting or lower time complexity.  Not good if space is a concern.
+
+# A helper function is needed for mergeSort
+# TC: O(n) # Since we have to loop through all elements in the array
+def merge(sort_list, l, m, r): # l, m, and r are indices which identify the start, middle and end of the list
+    # Calulate the number of elements that will be in each of the sub arrays once we divide sort_list
+    left_array_elems = m - l + 1
+    right_array_elems = r - m
+    
+    # Create the subarrays
+    left_array = [0] * left_array_elems
+    right_array = [0] * right_array_elems
+
+    # Populate the subarrays with data from the list we want to sort
+    for elem_num in range(0, left_array_elems):
+        left_array[elem_num] = sort_list[l + elem_num] # Make sure to add the starting index value so that we grab the correct values from sort_list
+    for elem_num in range(0, right_array_elems):
+        right_array[elem_num] = sort_list[m + 1 + elem_num]
+
+    # Define indices of the lists so that we can begin merger process
+    i = 0 # initial index of left sub array
+    j = 0 # initial index of right sub array
+    k = l # initial index of merged sub array
+
+    # Iterate over our subarrays to merge and sort them
+    while i < left_array_elems and j < right_array_elems: # While our indexes are less the size of the subarrays...
+        if left_array[i] <= right_array[j]: # if the element from the left array is smaller...
+            sort_list[k] = left_array[i] # then put that element in the spot in sort_array
+            i += 1
+        else:
+            sort_list[k] = right_array[j] # otherwise use the element from the right array, since it is smaller
+            j += 1
+        k += 1
+
+    # After the sorting step, there may be elements in either subarray/list left over because the left and right subarrays may have differing
+    # numbers of elements.  Thefore, we need to loop through any leftovers and add them to the merged list
+    while i < left_array_elems:
+        sort_list[k] = left_array[i]
+        i += 1
+        k += 1
+    while j < right_array_elems:
+        sort_list[k] = right_array[j]
+        j += 1
+        k += 1
+
+
+def mergeSort(sort_list, l, r): # Start and end of the list that needs to be sorted
+    # if we're not at the end of the list, find the middle index
+    if l < r:
+        m = (l + (r-1))//2 # use floor division since we want an integer
+        
+        # call the function recursively so that we can atomize the input list and merge it back together again
+        mergeSort(sort_list, l, m) # Left subarray
+        mergeSort(sort_list, m+1, r) # Right subarray add 1 to m since the m index is included in the left subdivision
+        merge(sort_list, l, m, r) # Do the work
+    return sort_list
+
+
 
 # Testing
 my_list = [2,1,7,6,5,3,4,9,8]
@@ -129,5 +196,9 @@ my_list = [2,1,7,6,5,3,4,9,8]
 #print("\n\n Insertion Sort:")
 #print(insertionSort(my_list))
 
-print("\n\n Bucket Sort:")
-print(insertionSort(my_list))
+#print("\n\n Bucket Sort:")
+#print(bucketSort(my_list))
+
+print("\n\n Merge Sort:")
+print(mergeSort(my_list, 0, 8))
+
