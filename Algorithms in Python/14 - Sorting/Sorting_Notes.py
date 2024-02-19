@@ -185,8 +185,57 @@ def mergeSort(sort_list, l, r): # Start and end of the list that needs to be sor
 
 
 
+# Quick Sort
+# ---------------------------------------------------------------------
+# Quick sort uses a strategy of comparing a pilot number chosen at random to all the other values in the list/array
+# The array is sorted by iteratively swapping values based on a comparison to the pilot number.  That pilot number
+# is then used as a boundary, which delineates the division between an area of the array with values less than the 
+# pilot (left side) and area where values are greater than the pilot (right side).
+
+# Function to swap list values
+def swap(das_list, index_1, index_2):
+    das_list[index_1], das_list[index_2] = das_list[index_2], das_list[index_1]
+
+# Pivot - 
+# With pivot, our goal is to find values less than the pilot number and swap them with numbers greater than the the
+# pilot.  Then, we will swap the pilot number with the swap index number to form the boundary in the array.
+def pivot(sort_list, pivot_index, end_index):
+    # When we start, pivot and swap indexes will both point to the first element in the list
+    swap_index = pivot_index
+    # Now we iterate over the list to begin swapping values
+    for i in range(pivot_index+1, end_index+1): # Add 1 to where we start because we we're comparing all other list items to the pivot element and we don't need to compare it to itself.  Add 1 to the end because need to analyze that last element (Python is non-inclusive)
+        # By doing nothing to swap_index if the value we encounter is greater than the pilot value, we ensure that no matter what
+        # the distribution of numbers in the array we're sorting looks like, or how close to the 'middle' of the distribution the pilot
+        # is, we'll always conclude with the pilot value separating the smaller elements from the larger ones.
+        if sort_list[i] < sort_list[pivot_index]: # If element in the list we're currently looking at is less than the pivot value...
+            swap_index += 1 # Move the swap index up to the next element.  This will point to an element bigger than the pivot value
+            swap(sort_list, swap_index, i) # Now we can swap those values so that smaller one is closer to the pilot (left) and the larger one is closer to the end (right)
+    
+    # Once we've reached the end of the list, all comparisons against the pilot value are done, so we swap the pilot
+    # value with the pivot value.  Upon doing so, all values smaller than pilot will be to its right, and all values
+    # larger will be to its left.
+    swap(sort_list, pivot_index, swap_index)
+    return swap_index # we need this since it will be our boundary
+
+# Runs pivot recursively, using the index returned by pivot to continuously subdivide the list into smaller and smaller sorted chunks
+def quickSort(sort_list, left_index, right_index):
+    # Base case
+    if left_index < right_index: # When left index == right index, its sorted, so we can stop
+        print("L:", left_index)
+        print("R:", right_index)
+        print("\n")
+        pivot_index = pivot(sort_list, left_index, right_index) # Run pivot once to split the list in half and find our boundary/pivot index
+        # Now, run quicksort recursively until the list is sorted
+        quickSort(sort_list, left_index, pivot_index-1) # Sort the left hand side of the list.  Subtract 1 from pivot since its our boundary and we don't want to include it
+        quickSort(sort_list, pivot_index+1, right_index) # Sort the right hand side of the list.
+    return sort_list
+
+
+
+
 # Testing
 my_list = [2,1,7,6,5,3,4,9,8]
+my_new_list = [3,5,0,6,2,1,4]
 #print("\n\n Bubble Sort:")
 #print(bubbleSort(my_list))
 
@@ -199,6 +248,10 @@ my_list = [2,1,7,6,5,3,4,9,8]
 #print("\n\n Bucket Sort:")
 #print(bucketSort(my_list))
 
-print("\n\n Merge Sort:")
-print(mergeSort(my_list, 0, 8))
+#print("\n\n Merge Sort:")
+#print(mergeSort(my_list, 0, 8))
+
+print("\n\n Quick Sort:")
+print(quickSort(my_new_list, 0, 6))
+print(my_new_list)
 
