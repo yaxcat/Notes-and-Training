@@ -231,6 +231,29 @@ def quickSort(sort_list, left_index, right_index):
     return sort_list
 
 
+# Heap Sort
+# ---------------------------------------------------------------------
+# TC: O()
+# SC: O()
+
+def heapify(sort_list, n, i):
+    min_element_index = i
+    left_index = 2 * i + 1
+    right_index = 2 * i + 2
+
+    # Because we're creating a minimum heap the smallest number in the heap must be the root. Therefore we need to figure out if the value
+    # we're considering is less than the the current value found at min_element_index.  If it is, we need to update min_element_index.  In
+    # other words, this is the mechanism to keep track of what our minimum heap value is/where it lives.
+    if left_index < n and sort_list[left_index] < sort_list[min_element_index]:
+        min_element_index = left_index
+    if right_index < n and sort_list[right_index] < sort_list[min_element_index]:
+        min_element_index = right_index
+
+    # Now that we've figured out what the minimum value is, and where it is, swap it with the root if it is smaller than the root.
+    if min_element_index != 1:
+        sort_list[i], sort_list[min_element_index] = sort_list[min_element_index], sort_list[i]
+        heapify(sort_list, n, min_element_index) # Call heapify recursively to keep the heap sorted
+
 
 
 # Testing
