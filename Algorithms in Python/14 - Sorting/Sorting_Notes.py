@@ -233,9 +233,10 @@ def quickSort(sort_list, left_index, right_index):
 
 # Heap Sort
 # ---------------------------------------------------------------------
-# TC: O()
-# SC: O()
+# TC: O(N(logN)) due to the recurisve function calls
+# SC: O(1) since we're working within the original list
 
+# Need a helper function to keep the heap organized
 def heapify(sort_list, n, i):
     min_element_index = i
     left_index = 2 * i + 1
@@ -250,12 +251,24 @@ def heapify(sort_list, n, i):
         min_element_index = right_index
 
     # Now that we've figured out what the minimum value is, and where it is, swap it with the root if it is smaller than the root.
-    if min_element_index != 1:
+    if min_element_index != i:
         sort_list[i], sort_list[min_element_index] = sort_list[min_element_index], sort_list[i]
         heapify(sort_list, n, min_element_index) # Call heapify recursively to keep the heap sorted
 
+# With heap sort iterate through the input list and insert its elements one by one into a binary heap.
+def heapSort(sort_list):
+    list_len = len(sort_list)
+    # Establish the initial heap structure
+    for index in range(int(list_len/2)-1, -1, -1): # Start in the middle of the unsorted list and work backwards until we get to the beginning of the list.  This processes the left side of the list.
+        heapify(sort_list, list_len, index) # Now call heapify to organize this section (within the input list itself)
 
 
+    # Now, heapify the entire list
+    for index in range(list_len-1, 0, -1): # Starting at the end of the list...
+        sort_list[index], sort_list[0] = sort_list[0], sort_list[index] # Iteratively swap the first and last values (critical to creating the heap structure)
+        heapify(sort_list, index, 0) # Now call heapify so that we can organize the data structure
+
+    return sort_list
 # Testing
 my_list = [2,1,7,6,5,3,4,9,8]
 my_new_list = [3,5,0,6,2,1,4]
@@ -274,7 +287,9 @@ my_new_list = [3,5,0,6,2,1,4]
 #print("\n\n Merge Sort:")
 #print(mergeSort(my_list, 0, 8))
 
-print("\n\n Quick Sort:")
-print(quickSort(my_new_list, 0, 6))
-print(my_new_list)
+#print("\n\n Quick Sort:")
+##print(quickSort(my_new_list, 0, 6))
+#print(my_new_list)
 
+print("\n\n Heap Sort:")
+print(heapSort(my_list))
