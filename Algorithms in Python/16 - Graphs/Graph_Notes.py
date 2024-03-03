@@ -34,22 +34,45 @@
 # Creates the graph using a dictionary if provided, or creates an empty dictionary to represent the graph if nothing is passed
 # in
 class Graph:
-    def __init__(self, gdict=None):
-        if gdict is None:
-            gdict = {}
-        self.gdict = gdict
+    def __init__(self, adj_list=None):
+        if adj_list is None:
+            adj_list = {}
+        self.adj_list = adj_list
     
-    # Simply identifies the target vertex and adds the edge (vertex we're linking to) by taking advantage of the key/value
-    # structure of the dictionary.
-    def addEdge(self, vertex, edge):
-        self.gdict[vertex].append(edge)
+    # Adds a brand new vertex to the graph
+    def addVertex(self, vertex):
+        # First check to see if the node already exists
+        if vertex in self.adj_list.keys():
+            return "This node is already in the graph"
+        # If not, add the node
+        else:
+            self.adj_list[vertex] = []
+            return "Node added to graph"
+
+    def printGraph(self):
+        for vertex in self.adj_list:
+            print(vertex, ":", self.adj_list[vertex])
 
 
-my_graph = {
+my_graph = Graph()
+print(my_graph.addVertex('a'))
+print(my_graph.printGraph())
+print(my_graph.addVertex('a'))
+
+
+my_graph_old = {
     'a' : ['b', 'c'],
     'b' : ['a', 'd', 'e'],
     'c' : ['a', 'e'],
     'd' : ['b', 'e', 'f'],
     'e' : ['b', 'c', 'd', 'f'],
     'f' : ['d', 'e']
+}
+
+my_graph = {
+    'a': ['b','c','d'],
+    'b': ['a','e'],
+    'c': ['a','d'],
+    'd': ['a','c','e'],
+    'e': ['b','d']
 }
