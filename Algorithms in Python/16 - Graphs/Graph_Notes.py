@@ -33,6 +33,9 @@
 
 # Creates the graph using a dictionary if provided, or creates an empty dictionary to represent the graph if nothing is passed
 # in
+
+from collections import deque
+
 class Graph:
     def __init__(self, adj_list=None):
         if adj_list is None:
@@ -87,6 +90,23 @@ class Graph:
             return f"The target vertex {vertex_to_delete} has been deleted and its edges removed."
         return f"Unable to delete the target vertex {vertex_to_delete}"
 
+    # Breadth first search
+    # TC: O(V + E) Number of vertices + the number of edges.  Adding instead of multiplying because we're only visiting each node once
+    # SC: O(V) Because we're adding vertices to the visited set
+    def bfs(self, vertex):
+        visited = set() # Keeps track of the nodes we've already been too. Using a set because performance is good for searches
+        visited.add(vertex) # By default, we've visited the node we passed into the bfs function, so add it to the visited list
+        queue = deque([vertex]) # A FIFO data structure will help us easily manage traversing through the graph. Creates a double ended queue which operates in O(1) time complexity
+        while queue: # (While the queue is not empty)
+            current_vertex = queue.popleft() # Remove the first element in queue
+            print("Visited:", visited)
+            print("Queue:", queue)
+            print("Current Vertex:", current_vertex, "\n")
+            for adjacent_vertex in self.adj_list[current_vertex]: # Now loop through the neighbor nodes of the current vertex
+                if adjacent_vertex not in visited:
+                    visited.add(adjacent_vertex)
+                    queue.append(adjacent_vertex) # Add the vertex to the queue so we can continue iterating through the graph
+
     def printGraph(self):
         for vertex in self.adj_list:
             print(vertex, ":", self.adj_list[vertex])
@@ -123,7 +143,4 @@ my_graph = {
 }
 print("\n\n\n\n\n")
 my_new_graph = Graph(my_graph)
-my_new_graph.printGraph()
-print("\n\n")
-my_new_graph.removeVertex('e')
-my_new_graph.printGraph()
+my_new_graph.bfs('a')
