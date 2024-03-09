@@ -91,10 +91,13 @@ class Graph:
         return f"Unable to delete the target vertex {vertex_to_delete}"
 
     # Breadth first search
+    # Starts at some arbitrary node and traverses the graph level by level.  It explores the starting node's
+    # neighbors first, before descending to the next level.  See diagram.  Used if we know the target is
+    # relatively close to the starting point
     # TC: O(V + E) Number of vertices + the number of edges.  Adding instead of multiplying because we're only visiting each node once
     # SC: O(V) Because we're adding vertices to the visited set
     def bfs(self, vertex):
-        visited = set() # Keeps track of the nodes we've already been too. Using a set because performance is good for searches
+        visited = set() # Keeps track of the nodes we've already been to. Using a set because performance is good for searches
         visited.add(vertex) # By default, we've visited the node we passed into the bfs function, so add it to the visited list
         queue = deque([vertex]) # A FIFO data structure will help us easily manage traversing through the graph. Creates a double ended queue which operates in O(1) time complexity
         while queue: # (While the queue is not empty)
@@ -107,6 +110,28 @@ class Graph:
                     visited.add(adjacent_vertex)
                     queue.append(adjacent_vertex) # Add the vertex to the queue so we can continue iterating through the graph
 
+    
+    # Depth first search
+    # Starts at some arbitrary node and explores all along its deepest edge as far as it can before 
+    # backtracking.  Goes deep into different levels of the graph first.  Used if we know the target is 
+    # buried deep in the graph.
+    # TC: O(V + E) Number of vertices + the number of edges.  Adding instead of multiplying because we're only visiting each node once
+    # SC: O(V) Because we're adding vertices to the visited set               
+    def dfs(self, vertex):
+        visited = set()
+        visited.add(vertex)
+        stack = [vertex] # A LIFO structure is what we need here since it will naturally allow us to get the deepest edge
+        while stack: 
+            current_vertex = stack.pop() # Remove and return the last element from the stack
+            print(current_vertex)
+            # Now loop through the current vertex's neighbors and add them to the stack. By adding them
+            # in this way and popping them the way we do, we ensure that traverse through the depth of
+            # the deepest edge first
+            for adjacent_vertex in self.adj_list[current_vertex]: 
+                if adjacent_vertex not in visited:
+                    visited.add(adjacent_vertex)
+                    stack.append(adjacent_vertex)
+    
     def printGraph(self):
         for vertex in self.adj_list:
             print(vertex, ":", self.adj_list[vertex])
@@ -143,4 +168,7 @@ my_graph = {
 }
 print("\n\n\n\n\n")
 my_new_graph = Graph(my_graph)
+print("Breadth First Search:")
 my_new_graph.bfs('a')
+print("\n\nDepth First Search:")
+my_new_graph.dfs('a')
