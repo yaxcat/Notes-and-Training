@@ -68,7 +68,7 @@ tree.addChild(hot)
 hot.addChild(coffee)
 hot.addChild(tea)
 
-#print(tree)
+print(tree.children)
 
 
 
@@ -156,7 +156,11 @@ def preOrderTraversal(rootNode, node_returns=[], side=None):
     else:
         print("-:", rootNode.data)
     node_returns.append(rootNode.data)
+    if rootNode.leftChild:
+        print('LC Parent: ' + str(rootNode.data))
     preOrderTraversal(rootNode.leftChild, node_returns, side='Left') # Function calls itself recursively until it runs out of left nodes
+    if rootNode.rightChild:
+        print('RC Parent: ' + str(rootNode.data))
     preOrderTraversal(rootNode.rightChild, node_returns, side='Right') # Then, the same thing happens until we run out of right nodes
     print("")
 
