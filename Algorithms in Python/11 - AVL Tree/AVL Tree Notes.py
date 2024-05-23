@@ -97,8 +97,8 @@ def rotateRight(disbalancedNode):
     # its own left child (the left granchild of the disbalanced node)
     newRoot = disbalancedNode.leftChild 
     # The left child of the disbalanced node is now replaced with the right child of the disbalanced node's leftchild because 
-    # that node is guaranteed to be less than the value of the disbalanced node, but greater than the value of the leftchild. 
-    # Therefore, it cannot possibly conflict (be greater than) the disbalanced node's existing right node  
+    # that node is guaranteed to be less than the value of the disbalanced node, but greater than the value of the current
+    # leftchild. Therefore, it cannot possibly conflict (be greater than) the disbalanced node's existing right node  
     disbalancedNode.leftChild = disbalancedNode.leftChild.rightChild
     newRoot.rightChild = disbalancedNode
     # We must update the height of the disbalanced node to the height of its left tree or right tree, whichever is greater. We 

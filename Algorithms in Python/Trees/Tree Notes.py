@@ -170,9 +170,6 @@ preOrderTraversal(mybt)
 
 
 # In order traversal function
-# Notice how the code is basically identical to the preOrderTraversal function.  Traversal of the graph takes place
-# in exactly the same order as the function.  The difference in output is simply due to where the print statements
-# are located.
 # TC: O(n)
 # SC: O(n)
 def inOrderTraversal(rootNode,node_returns=[], side=None):
