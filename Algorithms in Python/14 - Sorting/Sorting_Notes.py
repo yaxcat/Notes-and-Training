@@ -233,6 +233,9 @@ def quickSort(sort_list, left_index, right_index):
 
 # Heap Sort
 # ---------------------------------------------------------------------
+# The heap sort code is considerably simpler than the code for creating and modifying a binary heap.  This is largely because 
+# we're modifying the heap in place, and as such do not need functions to handle inserting and removing nodes.  We only need
+# to create a maintain the heap structure.
 # TC: O(N(logN)) due to the recurisve function calls
 # SC: O(1) since we're working within the original list
 
@@ -255,7 +258,9 @@ def heapify(sort_list, n, i):
         sort_list[i], sort_list[min_element_index] = sort_list[min_element_index], sort_list[i]
         heapify(sort_list, n, min_element_index) # Call heapify recursively to keep the heap sorted
 
-# With heap sort iterate through the input list and insert its elements one by one into a binary heap.
+# With heap sort iterate through the first half of the input list and heapify its nodes to ensure a valid heap structure.  
+# We start in the middle of the list and work backwards towards the root because we know that all nodes in the right side 
+# of the list of leaf nodes and as such are already valid heaps.  See diagram for proof.
 def heapSort(sort_list):
     list_len = len(sort_list)
     # Establish the initial heap structure
