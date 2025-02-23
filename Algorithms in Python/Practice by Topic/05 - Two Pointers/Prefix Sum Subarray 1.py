@@ -15,6 +15,7 @@ def subarray_sum(arr: List[int], target: int) -> List[int]:
         # subtracting it from the current running total gives the target sum,
         # then the subarray between those two indices sums to the target.
         complement = running_total - target
+        print(prefix_sum)
         if complement in prefix_sum:
             return [prefix_sum[complement], ind]  # Return the start and end indices.
         # Store the running total with its corresponding index for future lookups.
