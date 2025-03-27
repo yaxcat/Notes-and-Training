@@ -1,30 +1,25 @@
-from typing import List
+def decode_ways(digits: str) -> int:
+    memo = {}
+    num_digs = len(digits)
 
-def letter_combinations_of_phone_number(digits: str) -> List[str]:
-    results = []
-    path = []
-    keypad = {
-        '2': 'abc',
-        '3': 'def',
-        '4': 'ghi',
-        '5': 'jkl',
-        '6': 'mno',
-        '7': 'pqrs',
-        '8': 'tuv',
-        '9': 'wxyz'
-    }
-    def dfs(start):
-        if start == len(digits):
-            results.append(''.join(path))
-            return
-        for letter in keypad[digits[start]]:
-            path.append(letter)
-            dfs(start+1)
-            path.pop()
-    dfs(0)
-    return results
+    def helper(start_ind):
+        if start_ind == num_digs:
+            return 1
+        ways = 0
+        # Cannot decode a digit that starts with a 0 so short circuit
+        # this branch
+        if digits[start_ind] == 0:
+            return ways
+        # Decode 1 digit
+        ways += helper(start_ind + 1)
+        # Decode 2 digits
+        if int(digits[start_ind:start_ind+2]) >= 10:
+            ways += helper(start_ind + 2)
+
+        return ways
+    return helper(0)
 
 if __name__ == "__main__":
-    digits = '56'
-    res = letter_combinations_of_phone_number(digits)
-    print(" ".join(res))
+    digits = '999'
+    res = decode_ways(digits)
+    print(res)
