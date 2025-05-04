@@ -24,12 +24,14 @@ def reorganize_string(s: str) -> str:
         char_2 = heappop(heap)
         # Update character counts and push back onto the heap if they're
         # greater than zero. If they're still the most frequently occuring,
-        # they'll bubble back up to the top of the heap
-        char_1[0] -= 1 # We decrement the count in the heap, not the counter object because the character may re-enter the heap
-        if char_1[0] > 0:
+        # they'll bubble back up to the top of the heap. We update the count 
+        # in the heap, not the counter object because the character may 
+        # re-enter the heap
+        char_1[0] += 1 # Add instead of subtract because we negated char counts get max heap behavior
+        if char_1[0] < 0: # Reverse inequality relationship too
             heappush(heap, char_1)
-        char_2[0] -= 1
-        if char_2[0] > 0:
+        char_2[0] += 1
+        if char_2[0] < 0:
             heappush(heap, char_2)
         # We're popping unique characters and updating their counts separately
         # So it is safe to append in this fashion without causing a repeating
