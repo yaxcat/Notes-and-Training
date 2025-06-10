@@ -30,6 +30,27 @@ def perfect_squares(n: int) -> int:
     result = int(dfs(0, n))
     return result
 
+# Not the same problem, but good explanation of grid use in bottom up dynamic programming
+# https://www.youtube.com/watch?v=xCbYmUPvc2Q
+
+# Bottom up iterative approach is safer and more idomatic
+def perfect_squares_it(n: int) -> int:
+    # set to arbitrarily high value, 10000 was chosen here but one only needs a sufficiently 
+    # large value
+    dp = [10000] * (n + 1)
+    # Base case: zero perfect squares are needed to sum up to 0. Also represents the STARTING
+    # POSITION in the bottom-up approach, where no squares have yet been added in this case.
+    dp[0] = 0
+    # Loop over all the possible squares that might solve the problem. We only need to loop 
+    # up to the square root of the number. Anything past that will be too big.
+    for i in range(1, int(n**0.5) + 1):
+        square = i * i
+        # Loop over the valid unanalyzed space to determine the minimum number of squares
+        # necessary to fill the capacity at given spot in square size-capacity matrix.
+        for j in range(square, n + 1):
+            dp[j] = min(dp[j], dp[j - square] + 1)
+    return dp[n]
+
 if __name__ == "__main__":
     n = int(input())
     res = perfect_squares(n)
