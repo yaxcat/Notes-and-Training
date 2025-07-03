@@ -15,7 +15,7 @@ def lcs(i, j, word1, word2, memo):
     # at the start of each string (left) and build up the final result
     # as we traverse the state space tree. 
     result = 0
-    # Common character found, subtract 1 due to 0 based indexing
+    # Common character found, subtract 1 due to 0 based indexing of the string
     if word1[i-1] == word2[j-1]:
         # Recursively explore the remainder of each string
         result = lcs(i-1, j-1, word1, word2, memo) + 1
