@@ -48,7 +48,7 @@ def min_cost_to_visit_every_node(graph: list[list[int]]) -> int:
         dp[bitmask][curr_node] = ans
         return ans
     result = work_graph(1, 0)
-    return result if result < inf else -1
+    return int(result) if result < inf else -1
 
 if __name__ == "__main__":
     graph = [[int(x) for x in input().split()] for _ in range(int(input()))]
